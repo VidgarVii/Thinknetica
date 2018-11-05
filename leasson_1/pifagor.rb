@@ -1,14 +1,14 @@
 triangle = []
 
-def pifagor triangle
+def pifagor (triangle)
   triangle.map!{ |x| (x**2)  }
   c = triangle.max
   triangle.delete c
   p triangle
   p triangle.sum
-  puts 'Прямоуго́льный треуго́льник' if c == triangle.sum
-  
-end
+
+  puts 'Прямоуго́льный треуго́льник' if c == triangle.sum 
+end  
 
 puts 'Научная компания "Рога и костыли" приветствует Вас'
 puts 'Мы поможем Вам определить тип Вашего треугольника'
@@ -29,9 +29,8 @@ check = triangle.uniq
 case check.size
 when 2 
   puts 'Ого Ваш треугольник является равнобедренным!'
-  pifagor triangle
+  pifagor (triangle)
 when 1 then puts 'Ваш треугольник является равнобедренным и равносторонним, но не прямоугольный.' 
 else
-  pifagor triangle
-end 
-
+  pifagor (triangle)
+end

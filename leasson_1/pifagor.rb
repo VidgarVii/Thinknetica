@@ -15,8 +15,6 @@ triangle << gets.chomp.to_f
 print 'c = '
 triangle << gets.chomp.to_f
 
-check = triangle.uniq
-
 def pifagor? (triangle)
   triangle.map! { |x| ( x ** 2 ) }
   c = triangle.max

@@ -1,12 +1,12 @@
 triangle = []
 
 def pifagor triangle
-  triangle.map!{ |x| (x**2).round(2)  }
+  triangle.map!{ |x| (x**2)  }
   c = triangle.max
   triangle.delete c
   p triangle
-  sum = triangle.sum
-  puts 'PIFAGOR' if c == sum
+  p triangle.sum
+  puts 'Прямоуго́льный треуго́льник' if c == triangle.sum
   
 end
 
@@ -19,11 +19,11 @@ puts '   a /   \ b '
 puts '    /_____\ '
 puts '       c '
 print 'a = '
-triangle << gets.chomp.to_f
+triangle << gets.chomp.to_i
 print 'b = '
-triangle << gets.chomp.to_f
+triangle << gets.chomp.to_i
 print 'c = '
-triangle << gets.chomp.to_f
+triangle << gets.chomp.to_i
 check = triangle.uniq
 
 case check.size

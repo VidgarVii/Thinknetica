@@ -1,14 +1,11 @@
 puts "Задача 4"
 
 check = %w(а е и я ю э у ы о)
-alfavit = (:а..:я).to_a
-pos = (1..32).to_a
-
-hash = Hash[[alfavit, pos].transpose]
+alfavit = ('а'..'я').to_a
 total = {}
-hash.each { |k, v| 
-  if check.include?(k.to_s)
-    total[k] = v
+alfavit.each_with_index { |k, i| 
+  if check.include?(k)
+    total[k] = i+1
   end
 }
 p total

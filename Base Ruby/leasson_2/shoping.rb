@@ -1,7 +1,7 @@
  
 cart = {}
 
-def total_price (cart)
+def total_price(cart)
   check = 0
   cart.each_value do |item|    
     check += item[:price] * item[:count]

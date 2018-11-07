@@ -1,0 +1,26 @@
+=begin
+Имеет начальную и конечную станцию, а также список промежуточных станций. Начальная и конечная станции указываютсся при создании маршрута, а промежуточные могут добавляться между ними. a.insert(2, 99)
+Может добавлять промежуточную станцию в список
+Может удалять промежуточную станцию из списка
+Может выводить список всех станций по-порядку от начальной до конечной 
+=end
+
+class Route
+  def initialize(first_state, last_state)
+    @stations = [first_state, last_state]
+  end
+
+  def add_station(station, position = -2)
+    check = [0, -1].include?(position)
+    @stations.insert(position, station) unless check
+    puts 'Вы пытаетесь добавить станцию в конец или в начало пути' if check
+  end
+
+  def rm_staion(station)
+    @stations.delete(station)
+  end
+  
+  def puts_stations
+    puts @stations
+  end  
+end

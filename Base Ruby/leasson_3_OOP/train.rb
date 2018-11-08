@@ -43,8 +43,12 @@ class Train
   end  
 
   def run(direction)
+    index = @route.stations.index(@current_station)
     return puts 'Наберите скорость' if @speed == 0
     if %w(ahead back).include?(direction)
+      return puts 'Тупик' if (index == -1 && direction == 'ahead')
+      return puts 'Тупик' if (index == 0 && direction == 'back')
+      
       direct = (direction == 'ahead') ? 'next' : 'pred'
       change_place(direct)
     else
@@ -64,5 +68,4 @@ class Train
       @current_station = @route.stations[index.send(place)]
     end
   end
-
 end

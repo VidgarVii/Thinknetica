@@ -19,7 +19,8 @@ p st1.list_train[0].number
 train.add_speed
 train.run 'back'
 p train.current_station.name
-p st1.list_train
-p st2.list_train
-p st3.list_train[0].number
+p st1.list_train[0].number
 p st4.list_train
+p st2.list_train
+p st3.list_train
+

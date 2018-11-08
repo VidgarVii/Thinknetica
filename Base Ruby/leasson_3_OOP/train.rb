@@ -15,7 +15,7 @@
 require_relative 'route'
 
 class Train
-  attr_reader :speed, :count_railwaycar, :current_station
+  attr_reader :speed, :count_railwaycar, :current_station, :type
 
   def initialize(number, type, count_railwaycar)
     return unless %w(freight passenger).include?(type)
@@ -42,6 +42,5 @@ class Train
   def add_route(route)
     @route = route
     @current_station = @route.stations[0]
-  end
-  
+  end  
 end

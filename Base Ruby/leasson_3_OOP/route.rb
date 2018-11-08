@@ -6,6 +6,8 @@
 =end
 
 class Route
+  attr_reader :stations
+  
   def initialize(first_state, last_state)
     @stations = [first_state, last_state]
   end

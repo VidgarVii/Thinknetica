@@ -22,7 +22,7 @@ class Train
     @count_railwaycar =  count_railwaycar.to_i
     @speed = 0
     @route = nil
-    @index = 0
+    @station_index = 0
   end
 
   def add_speed
@@ -34,45 +34,41 @@ class Train
   end
 
   def add_railwaycar
-    @count_railwaycar += 1 
+    @count_railwaycar += 1 if @speed == 0
   end  
 
   def rm_railwaycar
-    @count_railwaycar -= 1
+    @count_railwaycar -= 1 if @speed == 0
   end
 
   def add_route(route)
     @route = route
-    change_place(@index)
+    @route.stations[0].arrive(self)
   end  
 
-  def run(direction)
-    return puts 'Наберите скорость' if @speed == 0
-    if %w(ahead back).include?(direction)
-      return puts 'Тупик' if (@index == -1 && direction == 'ahead')
-      return puts 'Тупик' if (@index == 0 && direction == 'back')
+  def move_forward
+    return unless next_station
+    current_station.departure(self)
+    @station_index += 1 
+    current_station.arrive(self)
+  end
 
-      direct = (direction == 'ahead') ? 'next' : 'pred'
-      change_place(direct)
-    else
-      puts 'Нет такого направления'
-    end
+  def back_forward
+    return unless prev_station
+    current_station.departure(self)
+    @station_index -= 1 
+    current_station.arrive(self)
   end
   
-  def where   
-    puts "Предыдущая станция #{@route.stations[@index - 1].name}" unless @index == 0
-    puts "Текущая станция #{@route.stations[@index].name}"
-    puts "Следующая станция #{@route.stations[@index + 1].name}" unless @index == -1
+  def next_station   
+    @route.stations[@station_index + 1] unless @station_index == -1
+  end
+  
+  def current_station
+    @route.stations[@station_index]
   end
 
-  private
-  def change_place(place)
-    if place == 0
-      @route.stations[0].add_train(self)
-    else
-      @route.stations[@index].send_train(self)
-      @route.stations[@index.send(place)].add_train(self)
-      @index = @index.send(place)
-    end
+  def prev_station   
+    @route.stations[@station_index - 1] unless @station_index == 0
   end
 end

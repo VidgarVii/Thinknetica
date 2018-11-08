@@ -14,6 +14,7 @@ train = Train.new("001", "passenger", 10)
 train.rm_railwaycar
 p train.count_railwaycar
 train.add_route(route)
-train2 = Train.new(002, 'passenger', 15)
-train2.add_route(route)
-st1.list_train_by_type('passenger')
+train.add_speed
+p train.current_station.name
+train.move_forward
+p train.current_station.name

@@ -13,11 +13,11 @@ class Station
     @list_train = []
   end
   
-  def add_train(train)
+  def arrive(train)
     @list_train << train
   end
   
-  def send_train(train)
+  def departure(train)
     @list_train.delete(train)
   end
 

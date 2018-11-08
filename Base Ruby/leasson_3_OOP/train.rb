@@ -9,15 +9,15 @@
 + Может прицеплять/отцеплять вагоны (по одному вагону за операцию, метод просто увеличивает или уменьшает количество вагонов). Прицепка/отцепка вагонов может осуществляться только если поезд не движется.
 + Может принимать маршрут следования (объект класса Route). 
 + При назначении маршрута поезду, поезд автоматически помещается на первую станцию в маршруте.
-Может перемещаться между станциями, указанными в маршруте. Перемещение возможно вперед и назад, но только на 1 станцию за раз.
++ Может перемещаться между станциями, указанными в маршруте. + Перемещение возможно вперед и назад, но только на 1 станцию за раз.
 Возвращать предыдущую станцию, текущую, следующую, на основе маршрута 
 =end
 class Train
-  attr_reader :speed, :count_railwaycar, :current_station, :type
+  attr_reader :speed, :count_railwaycar, :current_station, :type, :number
 
   def initialize(number, type, count_railwaycar)
     return unless %w(freight passenger).include?(type)
-    @numbe = number
+    @number = number
     @type = type
     @count_railwaycar =  count_railwaycar.to_i
     @speed = 0
@@ -39,6 +39,30 @@ class Train
 
   def add_route(route)
     @route = route
-    @current_station = @route.stations[0]
+    change_place(0)
   end  
+
+  def run(direction)
+    return puts 'Наберите скорость' if @speed == 0
+    if %w(ahead back).include?(direction)
+      direct = (direction == 'ahead') ? 'next' : 'pred'
+      change_place(direct)
+    else
+      puts 'Нет такого направления'
+    end
+  end
+
+  private
+  def change_place(place)
+    if place == 0
+      @route.stations[0].add_train(self)
+      @current_station = @route.stations[0]
+    else
+      index = @route.stations.index(@current_station)
+      @route.stations[index].send_train(self)
+      @route.stations[index.send(place)].add_train(self)
+      @current_station = @route.stations[index.send(place)]
+    end
+  end
+
 end

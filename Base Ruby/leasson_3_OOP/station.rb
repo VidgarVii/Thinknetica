@@ -29,14 +29,3 @@ class Station
     trains
   end  
 end
-
-
-train = Train.new('01', 'freight', 10)
-train2 = Train.new('02', 'passenger', 15)
-train3 = Train.new('03', 'passenger', 15)
-state = Station.new 'A'
-state.add_train(train)
-state.add_train(train2)
-state.add_train(train3)
-p state.list_train_for_type('passenger')
-#p state.list_train

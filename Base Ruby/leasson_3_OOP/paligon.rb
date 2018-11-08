@@ -14,13 +14,14 @@ train = Train.new("001", "passenger", 10)
 train.add_or_rm_railwaycar("add")
 p train.count_railwaycar
 train.add_route(route)
-p train.current_station.name
+
 p st1.list_train[0].number
 train.add_speed
-train.run 'back'
-p train.current_station.name
-p st1.list_train[0].number
-p st4.list_train
+train.where
+train.run 'ahead'
+train.where
+p st1.list_train
+p st4.list_train[0].number
 p st2.list_train
 p st3.list_train
 

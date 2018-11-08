@@ -33,9 +33,13 @@ class Train
     @speed = 0
   end
 
-  def add_or_rm_railwaycar(action)
-    @count_railwaycar = ( action == 'add' ) ? @count_railwaycar.next : @count_railwaycar.pred
+  def add_railwaycar
+    @count_railwaycar += 1 
   end  
+
+  def rm_railwaycar
+    @count_railwaycar -= 1
+  end
 
   def add_route(route)
     @route = route
@@ -68,7 +72,7 @@ class Train
     else
       @route.stations[@index].send_train(self)
       @route.stations[@index.send(place)].add_train(self)
-      @index = 0.send(place)
+      @index = @index.send(place)
     end
   end
 end

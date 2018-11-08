@@ -5,10 +5,8 @@
 + Может возвращать список поездов на станции по типу (см. ниже): кол-во грузовых, пассажирских
 + Может отправлять поезда (по одному за раз, при этом, поезд удаляется из списка поездов, находящихся на станции). 
 =end
-require_relative 'train'
-
 class Station
-  attr_reader :list_train
+  attr_reader :list_train, :name
 
   def initialize(name)
     @name = name

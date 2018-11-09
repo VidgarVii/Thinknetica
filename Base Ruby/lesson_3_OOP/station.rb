@@ -13,17 +13,16 @@ class Station
     @list_train = []
   end
   
-  def add_train(train)
+  def arrive(train)
     @list_train << train
   end
   
-  def send_train(train)
+  def departure(train)
     @list_train.delete(train)
   end
 
-  def list_train_for_type (type)    
-    trains = @list_train.reject{ |train| train.type != type }
-    puts "#{trains.size} поезд(а,ов)"
-    trains
+  def list_train_by_type(type)    
+    trains = @list_train.select{ |train| train.type == type }
+    trains.each { |train| puts train.number}
   end  
 end

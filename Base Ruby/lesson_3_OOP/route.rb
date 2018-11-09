@@ -13,9 +13,9 @@ class Route
   end
 
   def add_station(station, position = -2)
-    check = [0, -1].include?(position)
-    @stations.insert(position, station) unless check
-    puts 'Вы пытаетесь добавить станцию в конец или в начало пути' if check
+    check = (1...stations.size).include?(position)
+    @stations.insert(position, station) if check
+    puts 'Вы пытаетесь добавить станцию в конец или в начало пути' unless check
   end
 
   def rm_staion(station)

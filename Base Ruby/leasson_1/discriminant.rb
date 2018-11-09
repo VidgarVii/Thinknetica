@@ -8,18 +8,18 @@ b = gets.chomp.to_f
 print 'c = '
 c = gets.chomp.to_f
 
-d = b ** 2 - 4 * a * c
+d = b**2 - 4 * a * c
 
 if d < 0
   puts "\n Корней нет"
   abort
 else
-  x1 = ( - ( b ) + Math.sqrt( d ) ) / 2 * a
-  x2 = ( - ( b ) - Math.sqrt( d ) ) / 2 * a
+  x1 = ((-b + Math.sqrt(d)) / 2 * a).round(2)
+  x2 = ((-b - Math.sqrt(d)) / 2 * a).round(2)
 end
 
 if x1 == x2
   puts "\n Дискриминант - #{d} \n 1 корень - #{x1}"
 else
-  puts "\n Дискриминант - #{d} \n 2 корня:\n x1 = #{x1.round(2)}\n x2 = #{x2.round(2)}"
+  puts "\n Дискриминант - #{d} \n 2 корня:\n x1 = #{x1}\n x2 = #{x2}"
 end

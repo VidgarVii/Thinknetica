@@ -21,8 +21,8 @@ class Station
     @list_train.delete(train)
   end
 
-  def list_train_by_type(type)    
+  def list_train_by_type(type)
     trains = @list_train.select{ |train| train.type == type }
-    trains.each { |train| puts train.number}
+    trains.each { |train| puts train.number }
   end  
 end

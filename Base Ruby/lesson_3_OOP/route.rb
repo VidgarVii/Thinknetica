@@ -7,7 +7,7 @@
 
 class Route
   attr_reader :stations
-  
+
   def initialize(first_state, last_state)
     @stations = [first_state, last_state]
   end
@@ -21,8 +21,8 @@ class Route
   def rm_staion(station)
     @stations.delete(station)
   end
-  
+
   def puts_stations
     @stations.each{ |station| puts station.name}
-  end  
+  end
 end

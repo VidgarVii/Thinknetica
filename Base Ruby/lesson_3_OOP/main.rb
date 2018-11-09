@@ -6,6 +6,7 @@ require_relative 'train_passenger'
 require_relative 'wagon'
 require_relative 'wagon_cargo'
 require_relative 'wagon_passenger'
+require_relative 'adapter'
 
 st1 = Station.new('Хогвартс')
 st2 = Station.new('Дурмстранг')

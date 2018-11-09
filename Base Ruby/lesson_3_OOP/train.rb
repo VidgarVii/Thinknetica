@@ -39,7 +39,7 @@ class Train
     current_station.arrive(self)
   end
 
-  def back_forward
+  def move_backward
     return unless prev_station
 
     current_station.departure(self)

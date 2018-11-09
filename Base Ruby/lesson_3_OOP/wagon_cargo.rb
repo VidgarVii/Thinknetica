@@ -1,0 +1,1 @@
+CargoWagon = Class.new(Wagon)

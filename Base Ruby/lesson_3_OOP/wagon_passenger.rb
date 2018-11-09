@@ -1,0 +1,1 @@
+PassengerWagon = Class.new(Wagon)

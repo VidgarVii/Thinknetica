@@ -1,4 +1,7 @@
 class Adapter
+# ТЕКСТОВЫЙ ИНТЕРФЕЙС 1 - что то делает 2 - другое....
+
+
   attr_reader :stations
   def initialize
     @stations = []
@@ -44,8 +47,8 @@ class Adapter
   end
 
   def move(train, direction)
-    train.move_forward if direction = 'forward'
-    train.move_back if direction = 'backward'
+    train.move_forward if direction == 'forward'
+    train.move_back if direction == 'backward'
   end
 
   def trains

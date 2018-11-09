@@ -8,4 +8,3 @@ require_relative 'lib/wagon_cargo'
 require_relative 'lib/wagon_passenger'
 require_relative 'lib/adapter'
 
-Adapter.new

@@ -17,10 +17,8 @@ class TrainMenu < Menu
 
   def call_action
     case @answer
-    when 1 then @adapter.mk_station
-    when 2 then @adapter.mk_train('pass') 
-    when 3 then @adapter.mk_route  
-    when 4 then @adapter.mk_wagon('pass')    
+    when 1 then @adapter
+   
     end
   end
 

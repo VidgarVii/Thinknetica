@@ -50,13 +50,19 @@ class Adapter
 
   def puts_all
     puts 'Список поездов:'
-    puts @trains
+    puts 'Пассажирские:'
+    @trains[:pass].each { |item| puts "- #{item.number}" }
+    puts 'Грузовые:'
+    @trains[:cargo].each { |item| puts "- #{item.number}" }   
     puts 'Список станций:'
-    puts @stations
+    @stations.each { |item| puts "- #{item.name}"}    
     puts 'Список маршрутов:'
-    puts @routes
+    puts @routes    
     puts 'Список вагонов:'
-    puts @wagon
+    puts 'Пассажирские:'
+    puts @wagon[:pass]
+    puts 'Грузовые:'
+    puts @wagon[:cargo]
   end
   
   private

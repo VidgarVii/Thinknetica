@@ -2,10 +2,10 @@ class Adapter
   def initialize
     @stations = []
     @trains = { pass: [], cargo: [] }
+    @wagon = { pass: [], cargo: [] }
     @routes = []
   end
   
-
   def mk_station(name = "State #{rand(100)}")    
     @stations << Station.new(name)
   end
@@ -18,6 +18,11 @@ class Adapter
   def mk_route(st1, st2)
     return puts 'Создайте как минимум 2 станции' if @stations.size < 2
     @routes << Route.new(st1, st2)
+  end
+  
+  def mk_wagon(type)
+    @wagon[:cargo] << CargoWagon.new if type == 'cargo'
+    @wagon[:pass] << PassengerWagon.new if type == 'pass'    
   end
   
   def add_state_to_route(state, route = 0)
@@ -43,15 +48,17 @@ class Adapter
     train.move_back if direction == 'backward'
   end
 
-  def trains
+  def puts_all
+    puts 'Список поездов:'
     puts @trains
-  end
-
-  def stations
     puts 'Список станций:'
-    puts @stations.name
+    puts @stations
+    puts 'Список маршрутов:'
+    puts @routes
+    puts 'Список вагонов:'
+    puts @wagon
   end
-
+  
   private
 
 end

@@ -1,36 +1,38 @@
 require_relative 'context.rb'
+puts WELOCOME
 
 class Menu
-  def initialize
-    @adapter = Adapter.new
-    menu(:main)          
+  def initialize(adapter)
+    @adapter = adapter
+    puts quests
+    answer(3)
+    call_action
   end  
 
-  def menu(position = :main)
-    puts MENU[position]
-    puts '5 - начать сначало'
-    puts 'Для выхода из меню нажмите Enter'
-    choice = gets.chomp.to_i
-    
-    #Вызываем метод, который будет обрабатывать запросы
-    send(position(choice))
+  def quests
+    MENU[:main] 
   end
 
-  private
+  protected
 
-  def main(choice)
-    case choice
-    when 1 then menu(:create)
-    when 2 then menu(:action)
-    when 3 then @adapter.stations
-    when 5 then menu(:main)
-    end    
+  def answer(i)
+    puts "9 - Вернуться в главное меню\n0 - Выйти из программы."
+    @answer = gets.chomp.to_i
+    Menu.new(@adapter) if @answer == 9            #костыль
+    abort if @answer.zero?
   end
 
-  def create
-    
+  def call_action
+    case @answer
+    when 1 then MenuCreate.new(@adapter)
+    when 2 then choice
+    when 3 then @adapter.puts_all      
+    end
   end
-  
-  
-  
+
+  def choice
+    puts 'Выберите объект:'
+    puts MENU[:choice]
+    answer(2)
+  end  
 end

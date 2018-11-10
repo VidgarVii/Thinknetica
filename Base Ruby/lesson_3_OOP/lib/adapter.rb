@@ -1,8 +1,4 @@
 class Adapter
-# ТЕКСТОВЫЙ ИНТЕРФЕЙС 1 - что то делает 2 - другое....
-
-
-  attr_reader :stations
   def initialize
     @stations = []
     @trains = { pass: [], cargo: [] }
@@ -19,10 +15,6 @@ class Adapter
     @trains[:pass] << PassengerTrain.new(number) if type == 'pass'
   end
   
-#Если станций нет и нет арг. Создать всё.
-#Есть аргументы - создать станции из арг. и маршрут
-#Если станции есть, нет аргументов. Взять первую и последнюю станцию
-#Есть аргументы - берем станции из арг.
   def mk_route(st1, st2)
     return puts 'Создайте как минимум 2 станции' if @stations.size < 2
     @routes << Route.new(st1, st2)
@@ -52,9 +44,12 @@ class Adapter
   end
 
   def trains
+    puts @trains
   end
 
   def stations
+    puts 'Список станций:'
+    puts @stations.name
   end
 
   private

@@ -14,7 +14,7 @@ class Menu
   end
 
   protected
-
+ # Надо добавить проверку левых чисел
   def answer(i)
     puts "9 - Вернуться в главное меню\n0 - Выйти из программы."
     @answer = gets.chomp.to_i
@@ -34,5 +34,7 @@ class Menu
     puts 'Выберите объект:'
     puts MENU[:choice]
     answer(2)
+    TrainMenu.new(@adapter) if @answer == 1
+    RouteMenu.new(@adapter) if @answer == 2
   end  
 end

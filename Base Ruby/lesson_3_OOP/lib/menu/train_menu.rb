@@ -1,8 +1,8 @@
-class MenuCreate < Menu
+class TrainMenu < Menu
   def initialize(adapter)
     @adapter = adapter
     p @adapter
-    puts "Меню создания объектов \nВыюерите объект"
+    puts "Меню управления поездами \nВыюерите действие"
     puts quests
     answer(4)
     call_action

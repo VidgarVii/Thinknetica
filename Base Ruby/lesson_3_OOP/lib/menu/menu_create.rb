@@ -20,7 +20,8 @@ class MenuCreate < Menu
     when 1 then @adapter.mk_station
     when 2 then choice('train')
     when 3 then @adapter.mk_route
-    when 4 then choice('wagon')   
+    when 4 then choice('wagon')
+    when 5 then @adapter.create_all
     end
   end
 

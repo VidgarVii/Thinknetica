@@ -1,4 +1,6 @@
 class Adapter
+  attr_reader :routes, :stations
+
   def initialize
     @stations = []
     @trains = { pass: [], cargo: [] }
@@ -17,7 +19,13 @@ class Adapter
   
   def mk_route
     return puts 'Создайте как минимум 2 станции' if @stations.size < 2
-    @routes << Route.new(@stations[0], @stations[1])
+    puts 'Список существующих станций:'
+    @stations.each_with_index { |state, i| puts "#{i} - #{state}" }
+    puts 'Введите номер начальной станции маршрута'
+    st1 = gets.chomp.to_i
+    puts 'Введите номер конечной станции маршрута'
+    st2 = gets.chomp.to_i
+    @routes << Route.new(@stations[st1], @stations[st2])
   end
   
   def mk_wagon(type)
@@ -26,11 +34,11 @@ class Adapter
   end
   
   def add_state_to_route(state, route = 0)
-    @routes[route].add_station(state)
+    @routes[route].add_station(@stations[state])
   end
 
   def rm_state_from_route(state, route = 0)
-    @routes[route].rm_staion(state)
+    @routes[route].rm_staion(@stations[state])
   end
   
   def assign_route(train, route = 0)
@@ -50,21 +58,28 @@ class Adapter
 
   def puts_all
     puts 'Список поездов:'
-    puts 'Пассажирские:'
+    puts '  Пассажирские:'
     @trains[:pass].each { |item| puts "- #{item.number}" }
-    puts 'Грузовые:'
+    puts '  Грузовые:'
     @trains[:cargo].each { |item| puts "- #{item.number}" }   
     puts 'Список станций:'
     @stations.each { |item| puts "- #{item.name}"}    
     puts 'Список маршрутов:'
     puts @routes.each_with_index { |route, index| puts "#{index} - #{route.puts_stations}" }     
     puts 'Список вагонов:'
-    puts 'Пассажирские:'
+    puts '  Пассажирские:'
     puts @wagon[:pass]
-    puts 'Грузовые:'
+    puts '  Грузовые:'
     puts @wagon[:cargo]
   end
   
-  private
-
+  def create_all
+    mk_wagon('cargo')
+    mk_wagon('pass')
+    mk_train('cargo', '0001')
+    mk_train('pass', '0002')
+    mk_station('State 0001')
+    mk_station('State 0002')
+    @routes << Route.new(@stations[0], @stations[1])
+  end
 end

@@ -4,13 +4,13 @@ class TrainMenu < Menu
     p @adapter
     puts "Меню управления поездами \nВыюерите действие"
     puts quests
-    answer(4)
+    answer(5)
     call_action
     Menu.new(@adapter)
   end  
 
   def quests
-    MENU[:create] 
+    MENU[:train]
   end
 
   protected
@@ -23,6 +23,6 @@ class TrainMenu < Menu
   end
 
   def choice
-    @choice = ?
+    
   end  
 end

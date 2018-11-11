@@ -5,13 +5,13 @@ class RouteMenu < Menu
     p @adapter
     puts "Меню управления маршрутами \nВыберите действие"
     puts quests
-    answer(4)
+    answer(2)
     call_action
     Menu.new(@adapter)
   end  
 
   def quests
-    MENU[:create] 
+    MENU[:route] 
   end
 
   protected

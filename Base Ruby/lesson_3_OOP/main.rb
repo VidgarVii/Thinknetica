@@ -9,6 +9,8 @@ require_relative 'lib/wagon_passenger'
 require_relative 'lib/adapter'
 require_relative 'lib/menu/main'
 require_relative 'lib/menu/menu_create'
+require_relative 'lib/menu/menu_train'
+require_relative 'lib/menu/menu_route'
 
 @adapter = Adapter.new
 Menu.new(@adapter)

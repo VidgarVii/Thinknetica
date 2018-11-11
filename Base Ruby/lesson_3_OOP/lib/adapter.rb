@@ -15,9 +15,9 @@ class Adapter
     @trains[:pass] << PassengerTrain.new(number) if type == 'pass'
   end
   
-  def mk_route(st1, st2)
+  def mk_route
     return puts 'Создайте как минимум 2 станции' if @stations.size < 2
-    @routes << Route.new(st1, st2)
+    @routes << Route.new(@stations[0], @stations[1])
   end
   
   def mk_wagon(type)
@@ -57,7 +57,7 @@ class Adapter
     puts 'Список станций:'
     @stations.each { |item| puts "- #{item.name}"}    
     puts 'Список маршрутов:'
-    puts @routes    
+    puts @routes.each_with_index { |route, index| puts "#{index} - #{route.puts_stations}" }     
     puts 'Список вагонов:'
     puts 'Пассажирские:'
     puts @wagon[:pass]

@@ -7,6 +7,7 @@ class Menu
     puts quests
     answer(3)
     call_action
+    Menu.new(@adapter)
   end  
 
   def quests
@@ -26,7 +27,7 @@ class Menu
     case @answer
     when 1 then MenuCreate.new(@adapter)
     when 2 then choice
-    when 3 then @adapter.puts_all      
+    when 3 then @adapter.puts_all
     end
   end
 

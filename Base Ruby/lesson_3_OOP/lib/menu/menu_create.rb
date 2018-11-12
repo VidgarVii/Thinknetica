@@ -1,6 +1,7 @@
 class MenuCreate < Menu
   def initialize(adapter)
     @adapter = adapter
+    system('cls')
     p @adapter
     puts "Меню создания объектов \nВыберите объект"
     puts quests

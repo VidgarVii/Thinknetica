@@ -91,8 +91,8 @@ class Adapter
 
   def puts_all
     puts 'Список поездов:'
-    @trains.each { |item| puts "- #{item.number} : #{item.class}" }
-    puts 'Список станций:'
+    @trains.each_with_index { |train, i| print i, show_train(train) }
+    puts "\nСписок станций:"
     @stations.each do |item| 
       puts "- #{item.name} : Список ожидающих поездов: 
       Грузовые:" 
@@ -118,5 +118,15 @@ class Adapter
     mk_station('State 0001')
     mk_station('State 0002')
     @routes << Route.new(@stations[0], @stations[1])
+  end
+
+  private
+
+  def show_train(train)
+  
+  puts "\n#{train.class}: #{train.number}"
+  count = train.wagons.size
+  puts "Кол-во вагонов: #{count}"  
+  puts WAGONS[count]
   end
 end

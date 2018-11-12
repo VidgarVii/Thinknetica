@@ -1,6 +1,7 @@
 class TrainMenu < Menu
   def initialize(adapter)
     @adapter = adapter
+    system('cls')
     puts "Меню управления поездами \nСписок ваших поездов:"
     @adapter.trains.each_with_index do |train, i|
       puts "#{i} - #{train.number} : #{train.class}"

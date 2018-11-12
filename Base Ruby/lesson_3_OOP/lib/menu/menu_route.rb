@@ -1,6 +1,7 @@
 class RouteMenu < Menu
   def initialize(adapter)
     @adapter = adapter
+    system('cls')
     @choice = nil
     puts "Меню управления маршрутами \nВыберите действие"
     puts quests

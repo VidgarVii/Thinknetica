@@ -4,7 +4,7 @@ class TrainMenu < Menu
     p @adapter
     puts "Меню управления поездами \nВыюерите действие"
     puts quests
-    answer(5)
+    answer
     call_action
     Menu.new(@adapter)
   end  

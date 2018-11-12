@@ -5,7 +5,7 @@ class Menu
   def initialize(adapter)
     @adapter = adapter
     puts quests
-    answer(3)
+    answer
     call_action
     Menu.new(@adapter)
   end  
@@ -16,7 +16,7 @@ class Menu
 
   protected
  # Надо добавить проверку левых чисел
-  def answer(i)
+  def answer
     puts "9 - Вернуться в главное меню\n0 - Выйти из программы."
     @answer = gets.chomp.to_i
     Menu.new(@adapter) if @answer == 9            #костыль

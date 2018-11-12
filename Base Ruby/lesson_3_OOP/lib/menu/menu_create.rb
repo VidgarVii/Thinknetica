@@ -4,7 +4,7 @@ class MenuCreate < Menu
     p @adapter
     puts "Меню создания объектов \nВыберите объект"
     puts quests
-    answer(4)
+    answer
     call_action
     Menu.new(@adapter)
   end  
@@ -27,7 +27,7 @@ class MenuCreate < Menu
 
   def choice(object)
     puts MENU[:type]
-    answer(2)
+    answer
     if object == 'train'
       @adapter.mk_train('pass') if @answer == 1
       @adapter.mk_train('cargo') if @answer == 2

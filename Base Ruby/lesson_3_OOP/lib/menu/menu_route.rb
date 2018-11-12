@@ -4,7 +4,7 @@ class RouteMenu < Menu
     @choice = nil
     puts "Меню управления маршрутами \nВыберите действие"
     puts quests
-    answer(2)
+    answer
     call_action
     Menu.new(@adapter)
   end  

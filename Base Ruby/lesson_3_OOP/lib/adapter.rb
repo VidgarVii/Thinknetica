@@ -35,7 +35,7 @@ class Adapter
   
   def add_state_to_route(route = 0)
     puts 'Выберите порядковый номер станции'  
-    @routes[route].stations.each_with_index do |state, i| 
+    @stations.each_with_index do |state, i| 
       puts "#{i} - #{state.name}" 
     end
     state = gets.chomp.to_i
@@ -101,7 +101,10 @@ class Adapter
       item.list_train_by_type(PassengerTrain)
     end  
     puts 'Список маршрутов:'
-    @routes.each_with_index { |route, index| puts "#{index} - #{route.puts_stations}" }     
+    @routes.each_with_index do |route, index| 
+      puts "#{index} - #{route}"
+      route.puts_stations
+     end     
     puts 'Список вагонов:'
     @wagon.each { |item| puts "- #{item} : #{item.class}" }
     p self

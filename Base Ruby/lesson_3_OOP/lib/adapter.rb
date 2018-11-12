@@ -33,11 +33,23 @@ class Adapter
     @wagon << PassengerWagon.new if type == 'pass'    
   end
   
-  def add_state_to_route(state, route = 0)
+  def add_state_to_route(route = 0)
+    puts 'Выберите порядковый номер станции'  
+    @routes[route].stations.each_with_index do |state, i| 
+      puts "#{i} - #{state.name}" 
+    end
+    state = gets.chomp.to_i
     @routes[route].add_station(@stations[state])
   end
 
-  def rm_state_from_route(state, route = 0)
+  def rm_state_from_route(route)
+    return puts 'Вы не можете удалить станцию в маршруте из 2х станций' if @routes[route].stations.size == 2
+    
+    puts 'Выберите порядковый номер станции'
+    @routes[route].stations.each_with_index do |state, i| 
+      puts "#{i} - #{state.name}" 
+    end
+    state = gets.chomp.to_i
     @routes[route].rm_staion(@stations[state])
   end
   

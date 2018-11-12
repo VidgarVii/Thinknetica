@@ -26,8 +26,5 @@ class TrainMenu < Menu
     when 3 then @adapter.unhook_wagon(@adapter.trains[@train])
     when 4 then @adapter.move(@adapter.trains[@train])
     end
-  end
-
-  def choice(action) 
   end  
 end

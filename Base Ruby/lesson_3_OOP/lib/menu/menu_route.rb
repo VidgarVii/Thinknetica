@@ -27,20 +27,10 @@ class RouteMenu < Menu
   def choice(action)
     puts 'Выберите порядковый номер маршрута'
     route = gets.chomp.to_i
-    puts 'Выберите порядковый номер станции'
-
-    if action == 'add'      
-      @adapter.stations.each_with_index { |state, i| 
-        puts "#{i} - #{state.name}" }
-      state = gets.chomp.to_i
-      @adapter.add_state_to_route(state, route)
-    elsif action == 'del'
-      return puts 'Вы не можете удалить станцию в маршруте из 2х станций' if @adapter.routes[route].stations.size == 2
-
-      @adapter.routes[route].stations.each_with_index { |state, i| 
-        puts "#{i} - #{state.name}" }
-      state = gets.chomp.to_i
-      @adapter.rm_state_from_route(state, route)
+    if action == 'add'
+      @adapter.add_state_to_route(route)
+    elsif action == 'del'     
+      @adapter.rm_state_from_route(route)
     end
   end  
 end

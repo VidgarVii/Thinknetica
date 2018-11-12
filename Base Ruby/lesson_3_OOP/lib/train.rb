@@ -1,9 +1,8 @@
 class Train
-  attr_reader :speed, :count_railwaycar, :type, :number
+  attr_reader :speed, :count_railwaycar, :number
 
   def initialize(number)
     @number = number
-    @type = type
     @speed = 0
     @route = nil
     @station_index = 0
@@ -48,14 +47,20 @@ class Train
   end
 
   def next_station
+    return puts 'Нет маршрута' if @route == nil
+
     @route.stations[@station_index + 1]
   end
 
   def current_station
+    return puts 'Нет маршрута' if @route == nil
+
     @route.stations[@station_index]
   end
 
   def prev_station
+    return puts 'Нет маршрута' if @route == nil
+
     @route.stations[@station_index - 1] unless @station_index.zero?
   end
 

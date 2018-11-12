@@ -4,7 +4,7 @@ class CargoTrain < Train
 	end
 
 	def hook_wagon(wagon)
-		return unless right_type?(wagon)
+		return puts 'Тип вагона не подходит' unless right_type?(wagon)
 		super(wagon)
 	end
 

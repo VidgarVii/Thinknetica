@@ -11,7 +11,7 @@ class RouteMenu < Menu
 
   def quests
     puts 'Список ваших маршрутов:'
-    @adapter.routes.each_with_index { |route, i| puts "#{i} - #{route}"}
+    @adapter.routes.each_with_index { |route, i| puts "#{i} - #{route}" }
     MENU[:route] 
   end
 

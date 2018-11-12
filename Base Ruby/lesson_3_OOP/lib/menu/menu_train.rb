@@ -1,8 +1,12 @@
 class TrainMenu < Menu
   def initialize(adapter)
     @adapter = adapter
-    p @adapter
-    puts "Меню управления поездами \nВыюерите действие"
+    puts "Меню управления поездами \nСписок ваших поездов:"
+    @adapter.trains.each_with_index do |train, i|
+      puts "#{i} - #{train.number} : #{train.class}"
+    end
+    puts 'Выберите порядковый номер поезда'
+    @train = gets.chomp.to_i
     puts quests
     answer
     call_action
@@ -10,8 +14,6 @@ class TrainMenu < Menu
   end  
 
   def quests
-    puts 'Список ваших поездов:'
-    @adapter.routes.each_with_index { |route, i| puts "#{i} - #{route}"}
     MENU[:train]
   end
 
@@ -19,12 +21,15 @@ class TrainMenu < Menu
 
   def call_action
     case @answer
-    when 1 then @adapter
-   
+    when 1 then @adapter.assign_route_train(@adapter.trains[@train])
+    when 2 then @adapter.hook_wagon(@adapter.trains[@train])
+    when 3 then @adapter.unhook_wagon(@adapter.trains[@train])
+    when 4 then @adapter.move(@adapter.trains[@train])
+    when 5 then choice(5)
     end
   end
 
-  def choice
-    
+  def choice(action)
+ 
   end  
 end

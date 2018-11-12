@@ -1,5 +1,5 @@
 class Adapter
-  attr_reader :routes, :stations
+  attr_reader :routes, :stations, :trains
 
   def initialize
     @stations = []
@@ -41,30 +41,58 @@ class Adapter
     @routes[route].rm_staion(@stations[state])
   end
   
-  def assign_route(train, route = 0)
-    train.add_route(route)
+  def assign_route_train(train)
+    puts 'Выберите порядковый номер маршрута'
+    @routes.each_with_index { |route, i| puts "#{i} - #{route}" }
+    route = gets.chomp.to_i
+    train.add_route(@routes[route])
   end
   
-  def hook_wagon(train, count = 1)    
+  def hook_wagon(train)
+    return puts 'Создайте вагон' if @wagon.size.zero?
+
+    puts 'Выберите порядковый номер вагона'
+    @wagon.each_with_index do |wagon, i|
+      puts "#{i} - #{wagon} : #{wagon.class}"
+    end
+    wagon = gets.chomp.to_i
+    train.hook_wagon(@wagon[wagon])
   end
 
-  def unhook_wagon(train, count = 1)    
+  def unhook_wagon(train)
+    return puts 'Создайте вагон' if @wagon.size.zero?
+
+    puts 'Выберите порядковый номер вагона'
+    @wagon.each_with_index do |wagon, i|
+      puts "#{i} - #{wagon} : #{wagon.class}"
+    end
+    wagon = gets.chomp.to_i
+    train.unhook_wagon(@wagon[wagon])
   end
 
-  def move(train, direction)
-    train.move_forward if direction == 'forward'
-    train.move_back if direction == 'backward'
+  def move(train)
+    puts "Куда едим? \n  1 - Вперед\n  2 - Назад"
+    dir = gets.chomp.to_i
+    train.move_forward if dir == 1
+    train.move_back if dir == 2
   end
 
   def puts_all
     puts 'Список поездов:'
     @trains.each { |item| puts "- #{item.number} : #{item.class}" }
     puts 'Список станций:'
-    @stations.each { |item| puts "- #{item.name}" }    
+    @stations.each do |item| 
+      puts "- #{item.name} : Список ожидающих поездов: 
+      Грузовые:" 
+      item.list_train_by_type(CargoTrain)
+      puts '  Пассажирские:' 
+      item.list_train_by_type(PassengerTrain)
+    end  
     puts 'Список маршрутов:'
-    puts @routes.each_with_index { |route, index| puts "#{index} - #{route.puts_stations}" }     
+    @routes.each_with_index { |route, index| puts "#{index} - #{route.puts_stations}" }     
     puts 'Список вагонов:'
-    puts @wagon.each { |item| puts "- #{item} : #{item.class}" }
+    @wagon.each { |item| puts "- #{item} : #{item.class}" }
+    p self
   end
   
   def create_all

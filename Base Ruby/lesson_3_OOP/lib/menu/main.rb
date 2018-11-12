@@ -34,7 +34,7 @@ class Menu
   def choice
     puts 'Выберите объект:'
     puts MENU[:choice]
-    answer(2)
+    answer
     TrainMenu.new(@adapter) if @answer == 1
     RouteMenu.new(@adapter) if @answer == 2
   end  

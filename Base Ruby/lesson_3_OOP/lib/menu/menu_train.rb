@@ -10,6 +10,8 @@ class TrainMenu < Menu
   end  
 
   def quests
+    puts 'Список ваших поездов:'
+    @adapter.routes.each_with_index { |route, i| puts "#{i} - #{route}"}
     MENU[:train]
   end
 

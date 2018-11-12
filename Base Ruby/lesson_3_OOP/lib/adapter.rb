@@ -3,8 +3,8 @@ class Adapter
 
   def initialize
     @stations = []
-    @trains = { pass: [], cargo: [] }
-    @wagon = { pass: [], cargo: [] }
+    @trains = []
+    @wagon = []
     @routes = []
   end
   
@@ -13,8 +13,8 @@ class Adapter
   end
 
   def mk_train(type, number = "Train #{rand(100)}")
-    @trains[:cargo] << CargoTrain.new(number) if type == 'cargo'
-    @trains[:pass] << PassengerTrain.new(number) if type == 'pass'
+    @trains << CargoTrain.new(number) if type == 'cargo'
+    @trains << PassengerTrain.new(number) if type == 'pass'
   end
   
   def mk_route
@@ -29,8 +29,8 @@ class Adapter
   end
   
   def mk_wagon(type)
-    @wagon[:cargo] << CargoWagon.new if type == 'cargo'
-    @wagon[:pass] << PassengerWagon.new if type == 'pass'    
+    @wagon << CargoWagon.new if type == 'cargo'
+    @wagon << PassengerWagon.new if type == 'pass'    
   end
   
   def add_state_to_route(state, route = 0)
@@ -58,19 +58,13 @@ class Adapter
 
   def puts_all
     puts 'Список поездов:'
-    puts '  Пассажирские:'
-    @trains[:pass].each { |item| puts "- #{item.number}" }
-    puts '  Грузовые:'
-    @trains[:cargo].each { |item| puts "- #{item.number}" }   
+    @trains.each { |item| puts "- #{item.number} : #{item.class}" }
     puts 'Список станций:'
-    @stations.each { |item| puts "- #{item.name}"}    
+    @stations.each { |item| puts "- #{item.name}" }    
     puts 'Список маршрутов:'
     puts @routes.each_with_index { |route, index| puts "#{index} - #{route.puts_stations}" }     
     puts 'Список вагонов:'
-    puts '  Пассажирские:'
-    puts @wagon[:pass]
-    puts '  Грузовые:'
-    puts @wagon[:cargo]
+    puts @wagon.each { |item| puts "- #{item} : #{item.class}" }
   end
   
   def create_all

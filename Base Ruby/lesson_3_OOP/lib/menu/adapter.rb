@@ -122,11 +122,10 @@ class Adapter
 
   private
 
-  def show_train(train)
-  
-  puts "\n#{train.class}: #{train.number}"
-  count = train.wagons.size
-  puts "Кол-во вагонов: #{count}"  
-  puts WAGONS[count]
+  def show_train(train)  
+    puts "\n#{train.class}: #{train.number}"
+    count = train.wagons.size
+    puts "Кол-во вагонов: #{count}" 
+    puts WAGONS[count]   
   end
 end

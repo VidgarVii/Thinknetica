@@ -15,8 +15,8 @@ class Station
   end
 
   def list_train_by_type(type)
-    #type = PassengerTrain || CargoTrain
-    trains = @list_train.select{ |train| train.class == type }
+    #type = passenger || cargo
+    trains = @list_train.select{ |train| train.type == type }
     trains.each { |train| puts train.number }
   end
 end

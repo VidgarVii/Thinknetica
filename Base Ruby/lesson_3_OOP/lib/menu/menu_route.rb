@@ -6,6 +6,7 @@ class RouteMenu < Menu
     puts "Меню управления маршрутами \nВыберите действие"
     puts quests
     answer
+    puts 'Выберите порядковый номер маршрута'
     call_action
     Menu.new(@adapter)
   end  
@@ -19,19 +20,10 @@ class RouteMenu < Menu
   protected
 
   def call_action
+    route = gets.chomp.to_i
     case @answer
-    when 1 then choice('add')
-    when 2 then choice('del')
+    when 1 then @adapter.add_state_to_route(route)
+    when 2 then @adapter.rm_state_from_route(route)
     end
   end
-
-  def choice(action)
-    puts 'Выберите порядковый номер маршрута'
-    route = gets.chomp.to_i
-    if action == 'add'
-      @adapter.add_state_to_route(route)
-    elsif action == 'del'     
-      @adapter.rm_state_from_route(route)
-    end
-  end  
 end

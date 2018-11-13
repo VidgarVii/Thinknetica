@@ -13,8 +13,7 @@ class Adapter
   end
 
   def mk_train(type, number = "Train #{rand(100)}")
-    @trains << CargoTrain.new(number) if type == 'cargo'
-    @trains << PassengerTrain.new(number) if type == 'pass'
+    @trains << Train.new(number, type)  
   end
   
   def mk_route
@@ -29,8 +28,7 @@ class Adapter
   end
   
   def mk_wagon(type)
-    @wagon << CargoWagon.new if type == 'cargo'
-    @wagon << PassengerWagon.new if type == 'pass'    
+    @wagon << Wagon.new(type)      
   end
   
   def add_state_to_route(route = 0)
@@ -123,7 +121,7 @@ class Adapter
   private
 
   def show_train(train)  
-    puts "\n#{train.class}: #{train.number}"
+    puts "\n#{train.type}: #{train.number}"
     count = train.wagons.size
     puts "Кол-во вагонов: #{count}" 
     puts WAGONS[count]   

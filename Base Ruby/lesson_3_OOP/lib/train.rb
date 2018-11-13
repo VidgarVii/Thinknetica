@@ -1,8 +1,10 @@
 class Train
-  attr_reader :speed, :count_railwaycar, :number, :wagons
+  attr_reader :speed, :count_railwaycar, :number, :wagons, :type
 
-  def initialize(number)
+  def initialize(number, type)
+    #passenger || cargo
     @number = number
+    @type = type
     @speed = 0
     @route = nil
     @station_index = 0
@@ -18,7 +20,12 @@ class Train
   end
 
   def hook_wagon(wagon)
-    @wagons << wagon
+    if wagon.type == self.type
+      wagon.belongs_to = self
+      @wagons << wagon
+    else
+      puts 'Типы не совпадают'
+    end
   end
 
   def unhook_wagon(wagon)
@@ -63,8 +70,4 @@ class Train
 
     @route.stations[@station_index - 1] unless @station_index.zero?
   end
-
-  protected
-
-  def right_type?(wagon); end  
 end

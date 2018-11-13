@@ -184,8 +184,8 @@ class RailRoad
     type = gets.chomp.to_i
     puts 'Выберите номер или название поезда'
     name = gets.chomp
-    @trains << Train.new(name, 'passenger') if type == 1
-    @trains << Train.new(name, 'cargo') if type == 2
+    @trains << PassengerTrain.new(name) if type == 1
+    @trains << CargoTrain.new(name) if type == 2
   end
 
   def create_route
@@ -206,8 +206,8 @@ class RailRoad
   def create_wagon
     puts MENU[:type]
     type = gets.chomp.to_i
-    @wagons << Wagon.new('passenger') if type == 1
-    @wagons << Wagon.new('cargo') if type == 2
+    @wagons << PassengerWagon.new if type == 1
+    @wagons << CargoTrain.new if type == 2
   end
 
   def create_all

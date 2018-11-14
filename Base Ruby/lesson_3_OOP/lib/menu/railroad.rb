@@ -48,7 +48,7 @@ class RailRoad
     end  
     puts 'Список маршрутов:'
     @routes.each_with_index do |route, index| 
-      puts "#{index} - "
+      print "\n#{index} - "
       route.puts_stations
      end     
     puts "\nСписок вагонов:"
@@ -94,17 +94,30 @@ class RailRoad
   end
 
   def add_station_route(route)
-    @stations.each_with_index do |station, i|
+    stations = @stations - route.stations
+    if stations.size.zero?
+      puts 'Создайте станцию'
+      enter = gets
+      start
+    end
+
+    stations.each_with_index do |station, i|
       puts "#{i} - #{station.name}"
     end
+
     puts 'Выберите станцию'
     station = gets.chomp.to_i
-    route.add_station(@stations[station])
+    route.add_station(stations[station])
   end
 
   def rm_station_route(route)
+    if route.stations.size == 2
+      puts 'У маршрута не может быть меньше 2х станций'
+      enter = gets
+      start
+    end
     route.stations.each_with_index do |station, i|
-      puts "#{i} - #{station.name}"
+      puts "\n#{i} - #{station.name}"
     end
     puts 'Выберите станцию'
     station = gets.chomp.to_i
@@ -197,10 +210,16 @@ class RailRoad
 
     @stations.each_with_index { |station, i| puts "#{i} - #{station.name}" }
     puts 'Выберите начальную станцию'
-    start = gets.chomp.to_i
+    start = gets.chomp.to_i    
     puts 'Выберите конечную станцию'
     finish = gets.chomp.to_i
-    @routes << Route.new(@stations[start], @stations[finish])
+
+    if ((0...@stations.size).include?(finish) && (0...@stations.size).include?(start))
+      @routes << Route.new(@stations[start], @stations[finish])
+    else
+      puts 'Выберите станцию из списка'
+      create_route
+    end    
   end
 
   def create_wagon

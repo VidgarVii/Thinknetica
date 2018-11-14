@@ -12,8 +12,6 @@ class Route
   end
 
   def rm_staion(station)
-    return puts 'У маршрута не может быть меньше 2х станций' if @stations.size == 2
-
     @stations.delete(station)
   end
 

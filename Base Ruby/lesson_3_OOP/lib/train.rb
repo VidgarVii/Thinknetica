@@ -1,9 +1,21 @@
 class Train
   include RailsWay
+  include InstanceCounter
   attr_reader :speed, :count_railwaycar, :number, :wagons, :type
+  @@trains = []
+
+  def self.all
+    @@trains
+  end
+
+  def self.find(number)
+    @@trains.find { |train| train.number == number}    
+  end
 
   def initialize(number, type)
     #passenger || cargo
+    @@trains << self
+    register_instance(self)
     @number = number
     @type = type
     @speed = 0

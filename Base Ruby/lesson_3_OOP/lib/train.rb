@@ -1,4 +1,5 @@
 class Train
+  include RailsWay
   attr_reader :speed, :count_railwaycar, :number, :wagons, :type
 
   def initialize(number, type)

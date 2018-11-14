@@ -1,4 +1,5 @@
 class Wagon
+  include RailsWay
   attr_accessor :belongs_to
   attr_reader :type
   

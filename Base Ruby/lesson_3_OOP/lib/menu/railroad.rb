@@ -12,25 +12,24 @@ class RailRoad
       system('clear')
       puts MENU[:main]
       puts '0 - Выйти из программы.'
-      choice = gets.chomp.to_i
-      exit?(choice)
+      choice = gets.chomp
+      break if choice == '0'
       next_menu(choice)
     end
   end
 
   private
   
-  def exit?(choice)
-    abort if choice.zero?
-    start if choice == 9
+  def check(pos, choice)
+    (1...MENU[pos].size).include?(choice)
   end
   
   def next_menu(choice)
     case choice
-    when 1 then create_menu
-    when 2 then route_menu
-    when 3 then train_menu 
-    when 4 then puts_all
+    when '1' then create_menu
+    when '2' then route_menu
+    when '3' then train_menu 
+    when '4' then puts_all
     end
   end
 
@@ -60,14 +59,13 @@ class RailRoad
   def create_menu
     system('clear')
     puts MENU[:create]
-    choice = gets.chomp.to_i
-    exit?(choice)
+    choice = gets.chomp
     case choice
-    when 1 then create_station
-    when 2 then create_train
-    when 3 then create_route 
-    when 4 then create_wagon
-    when 5 then create_all 
+    when '1' then create_station
+    when '2' then create_train
+    when '3' then create_route 
+    when '4' then create_wagon
+    when '5' then create_all
     end
   end
 
@@ -76,20 +74,22 @@ class RailRoad
     if @routes.size.zero?
       puts 'Создайте маршрут'
       enter = gets
-      start
+      return
     end
     
     puts MENU[:route]
     choice = gets.chomp.to_i
-    exit?(choice)
+    return unless check(:route, choice)
+
     @routes.each_with_index do |route, i|
       print "#{i} - "; route.puts_stations
     end
+
     puts "\nВыберите маршрут"
-    route = gets.chomp.to_i
+    route = gets.chomp
     case choice
-    when 1 then add_station_route(@routes[route])
-    when 2 then rm_station_route(@routes[route])
+    when '1' then add_station_route(@routes[route])
+    when '2' then rm_station_route(@routes[route])
     end
   end
 
@@ -98,7 +98,7 @@ class RailRoad
     if stations.size.zero?
       puts 'Создайте станцию'
       enter = gets
-      start
+      return
     end
 
     stations.each_with_index do |station, i|
@@ -114,7 +114,7 @@ class RailRoad
     if route.stations.size == 2
       puts 'У маршрута не может быть меньше 2х станций'
       enter = gets
-      start
+      return
     end
     route.stations.each_with_index do |station, i|
       puts "\n#{i} - #{station.name}"
@@ -129,22 +129,21 @@ class RailRoad
     if @trains.size.zero?
       puts 'Создайте поезд'
       enter = gets
-      start
+      return
     end
 
     puts MENU[:train]
-    choice = gets.chomp.to_i
-    exit?(choice)
+    choice = gets.chomp
     @trains.each_with_index do |train, i|
       puts "#{i} - #{train.number}:#{train.type}"
     end
     puts 'Выберите поезд'
     train = gets.chomp.to_i
     case choice
-    when 1 then assign_route_train(@trains[train])
-    when 2 then hook_wagon(@trains[train])
-    when 3 then unhook_wagon(@trains[train])
-    when 4 then move(@trains[train]) 
+    when '1' then assign_route_train(@trains[train])
+    when '2' then hook_wagon(@trains[train])
+    when '3' then unhook_wagon(@trains[train])
+    when '4' then move(@trains[train]) 
     end
   end
 
@@ -189,14 +188,17 @@ class RailRoad
   def create_station
     puts 'Название станции'
     name = gets.chomp
+    return if name == ''
     @stations << Station.new(name)
   end
 
   def create_train
     puts MENU[:type]
     type = gets.chomp.to_i
+    create_train unless [1, 2].include?(type)    
     puts 'Выберите номер или название поезда'
     name = gets.chomp
+    create_train if name == ''    
     @trains << PassengerTrain.new(name) if type == 1
     @trains << CargoTrain.new(name) if type == 2
   end
@@ -205,7 +207,6 @@ class RailRoad
     if @stations.size < 2
       puts 'Создайте 2 станции'
       wait = gets
-      start
     end
 
     @stations.each_with_index { |station, i| puts "#{i} - #{station.name}" }

@@ -15,7 +15,7 @@ class Train
   def initialize(number, type)
     #passenger || cargo
     @@trains << self
-    register_instance(self)
+    register_instance
     @number = number
     @type = type
     @speed = 0

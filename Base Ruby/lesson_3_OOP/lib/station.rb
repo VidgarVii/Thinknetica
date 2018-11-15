@@ -1,7 +1,5 @@
 class Station
-  #include InstanceCounter
-  include InstanceMethods
-  extend ClassMethods
+  include InstanceCounter
   attr_reader :list_train, :name
   @@stations = []
 

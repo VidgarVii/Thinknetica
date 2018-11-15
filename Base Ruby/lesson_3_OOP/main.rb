@@ -11,12 +11,5 @@ require_relative 'lib/passenger_wagon'
 require_relative 'lib/menu/context'
 require_relative 'lib/menu/railroad'
 
-
-#menu = RailRoad.new
-#menu.start
-
-Station.new(123)
-Station.new(234)
-Station.new(345)
-Station.new(456)
-p Station.instances
+menu = RailRoad.new
+menu.start

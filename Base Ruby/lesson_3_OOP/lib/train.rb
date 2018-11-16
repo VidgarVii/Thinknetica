@@ -1,7 +1,7 @@
 class Train
   include RailsWay
   include InstanceCounter
-  attr_reader :speed, :count_railwaycar, :number, :wagons, :type
+  attr_reader :speed, :count_railwaycar, :number, :wagons, :type, :route
   @@trains = []
 
   def self.all
@@ -46,6 +46,7 @@ class Train
   end
 
   def add_route(route)
+    return if @route != nil
     @route = route
     @route.stations[0].arrive(self)
   end

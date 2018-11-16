@@ -20,10 +20,6 @@ class RailRoad
 
   private
   
-  def check(pos, choice)
-    (1...MENU[pos].size).include?(choice)
-  end
-  
   def next_menu(choice)
     case choice
     when '1' then create_menu
@@ -42,7 +38,7 @@ class RailRoad
       puts "- #{item.name} : Список ожидающих поездов: 
       Грузовые:" 
       item.list_train_by_type('cargo')
-      puts '  Пассажирские:' 
+      puts '  Пассажирские:'
       item.list_train_by_type('passenger')
     end  
     puts 'Список маршрутов:'
@@ -71,22 +67,18 @@ class RailRoad
 
   def route_menu
     system('clear')
-    if @routes.size.zero?
-      puts 'Создайте маршрут'
-      enter = gets
-      return
-    end
+    return error 'Создайте маршрут' if @routes.size.zero?
     
     puts MENU[:route]
-    choice = gets.chomp.to_i
-    return unless check(:route, choice)
-
+    choice = gets.chomp    
     @routes.each_with_index do |route, i|
       print "#{i} - "; route.puts_stations
     end
 
     puts "\nВыберите маршрут"
-    route = gets.chomp
+    route = gets.chomp.to_i
+    return error 'Маршрут не выбран' unless (@routes[route] || !route.zero?)
+    
     case choice
     when '1' then add_station_route(@routes[route])
     when '2' then rm_station_route(@routes[route])
@@ -95,12 +87,8 @@ class RailRoad
 
   def add_station_route(route)
     stations = @stations - route.stations
-    if stations.size.zero?
-      puts 'Создайте станцию'
-      enter = gets
-      return
-    end
-
+    return error 'Создайте станцию' if stations.size.zero?
+  
     stations.each_with_index do |station, i|
       puts "#{i} - #{station.name}"
     end
@@ -111,11 +99,8 @@ class RailRoad
   end
 
   def rm_station_route(route)
-    if route.stations.size == 2
-      puts 'У маршрута не может быть меньше 2х станций'
-      enter = gets
-      return
-    end
+    return error 'У маршрута не может быть меньше 2х станций' if route.stations.size == 2
+    
     route.stations.each_with_index do |station, i|
       puts "\n#{i} - #{station.name}"
     end
@@ -126,11 +111,7 @@ class RailRoad
 
   def train_menu
     system('clear')
-    if @trains.size.zero?
-      puts 'Создайте поезд'
-      enter = gets
-      return
-    end
+    return error 'Создайте поезд' if @trains.size.zero?
 
     puts MENU[:train]
     choice = gets.chomp
@@ -148,13 +129,19 @@ class RailRoad
   end
 
   def assign_route_train(train)
+    return error 'Создайте маршрут' if @routes.size.zero?
+   
     puts 'Выберите порядковый номер маршрута'
-    @routes.each_with_index { |route, i| puts "#{i} - #{route}" }
+    @routes.each_with_index { |route, i| puts "#{i+1} - #{route}" }
     route = gets.chomp.to_i
-    train.add_route(@routes[route])
+    return error 'Выбор некорректен' unless (@routes[route - 1] || route.zero?)
+
+    train.add_route(@routes[route - 1])
   end
 
   def move(train)
+    return error 'У поезда нет маршрута' if train.route.nil?
+    
     puts "Куда едим? \n  1 - Вперед\n  2 - Назад"
     dir = gets.chomp.to_i
     train.move_forward if dir == 1
@@ -162,53 +149,58 @@ class RailRoad
   end
 
   def hook_wagon(train)
-    return puts 'Создайте вагон' if @wagons.size.zero?
-
-    puts 'Выберите порядковый номер вагона'
-    @wagons.each_with_index do |wagon, i|
-      if wagon.belongs_to.nil?
-        puts "#{i} - #{wagon} : #{wagon.type}" 
-      end
+    return error 'Создайте вагон' if @wagons.size.zero?
+    
+    wagons = @wagons.select do |wagon| 
+      wagon.type == train.type && wagon.belongs_to.nil?
+    end    
+    wagons.each_with_index do |wagon, i|     
+        puts "#{i} - #{wagon} : #{wagon.type}"
     end
+    puts 'Выберите порядковый номер вагона'
     wagon = gets.chomp.to_i
-    train.hook_wagon(@wagons[wagon])
+    return error 'Выбор некорректен' unless wagons[wagon]
+
+    train.hook_wagon(wagons[wagon])
   end
 
   def unhook_wagon(train)
-    return puts 'Создайте вагон' if @wagons.size.zero?
+    return error 'Не чего отцеплять' if train.wagons.size.zero?
 
     puts 'Выберите порядковый номер вагона'
     train.wagons.each_with_index do |wagon, i|
       puts "#{i} - #{wagon} : #{wagon.type}"
     end
     wagon = gets.chomp.to_i
+    return error 'Выбор некорректен' unless train.wagons[wagon]
+    
     train.unhook_wagon(train.wagons[wagon])
   end
 
   def create_station
     puts 'Название станции'
     name = gets.chomp
-    return if name == ''
+    return error 'Станция должна иметь название' if name == ''
+
     @stations << Station.new(name)
   end
 
   def create_train
     puts MENU[:type]
     type = gets.chomp.to_i
-    create_train unless [1, 2].include?(type)    
-    puts 'Выберите номер или название поезда'
+    return unless [1, 2].include?(type)
+
+    puts 'Введите номер или название поезда'
     name = gets.chomp
-    create_train if name == ''    
+    return error 'Номер не может быть пустым' if name == ''
+
     @trains << PassengerTrain.new(name) if type == 1
     @trains << CargoTrain.new(name) if type == 2
   end
 
-  def create_route
-    if @stations.size < 2
-      puts 'Создайте 2 станции'
-      wait = gets
-    end
-
+  def create_route    
+    return error 'Создайте 2 станции' if @stations.size < 2
+    
     @stations.each_with_index { |station, i| puts "#{i} - #{station.name}" }
     puts 'Выберите начальную станцию'
     start = gets.chomp.to_i    
@@ -216,25 +208,31 @@ class RailRoad
     finish = gets.chomp.to_i
 
     if ((0...@stations.size).include?(finish) && (0...@stations.size).include?(start))
-      @routes << Route.new(@stations[start], @stations[finish])
+      if Station.all[start] == Station.all[finish]
+        puts 'Нельзя создать маршрут с 1 станцией'
+        enter = gets
+        return
+      end
+      @routes << Route.new(Station.all[start], Station.all[finish])
     else
-      puts 'Выберите станцию из списка'
-      create_route
+      puts 'Выбор станций не корректен'
+      enter = gets
+      return
     end    
   end
 
   def create_wagon
     puts MENU[:type]
     type = gets.chomp.to_i
-    @wagons << PassengerWagon.new if type == 1
+    @wagons << PassengerWagon.new if type == 1 
     @wagons << CargoTrain.new if type == 2
   end
 
   def create_all
     @wagons << Wagon.new('passenger')
-    @wagons << Wagon.new('carge')
+    @wagons << Wagon.new('cargo')
     @trains << Train.new('Train 0001', 'passenger')
-    @trains << Train.new('Train 0002', 'carge')
+    @trains << Train.new('Train 0002', 'cargo')
     @stations << Station.new('Трансильвания')
     @stations << Station.new('Пенсильвания')
     @routes << Route.new(@stations[0], @stations[1])
@@ -245,5 +243,10 @@ class RailRoad
     count = train.wagons.size
     puts "Кол-во вагонов: #{count}" 
     puts WAGONS[count]   
+  end
+
+  def error(message)
+    puts message
+    enter = gets    
   end
 end

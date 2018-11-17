@@ -190,12 +190,17 @@ class RailRoad
     type = gets.chomp.to_i
     return unless [1, 2].include?(type)
 
-    puts 'Введите номер или название поезда'
-    name = gets.chomp
-    return error 'Номер не может быть пустым' if name == ''
-
-    @trains << PassengerTrain.new(name) if type == 1
-    @trains << CargoTrain.new(name) if type == 2
+    begin
+      puts "Введите номер поезда\n 
+      Формат номера \"777-77\" (Номер может состоять из букв и цифр)"
+      name = gets.chomp
+      @trains << PassengerTrain.new(name) if type == 1
+      @trains << CargoTrain.new(name) if type == 2
+      puts "Создан поезд #{@trains[-1].number}"
+    rescue => exception
+      puts exception
+      retry      
+    end    
   end
 
   def create_route    

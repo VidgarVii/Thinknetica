@@ -3,7 +3,7 @@ class Train
   include InstanceCounter
   attr_reader :speed, :count_railwaycar, :number, :wagons, :type, :route
   @@trains = []
-
+  REGEXP_NUMBER = /^\w{3}-?\w{2}$/
   def self.all
     @@trains
   end
@@ -22,6 +22,7 @@ class Train
     @route = nil
     @station_index = 0
     @wagons = []
+    validation!
   end
 
   def add_speed
@@ -32,13 +33,10 @@ class Train
     @speed = 0
   end
 
-  def hook_wagon(wagon)
-    if wagon.type == self.type
-      wagon.belongs_to = self
-      @wagons << wagon
-    else
-      puts 'Типы не совпадают'
-    end
+  def hook_wagon(wagon) 
+    valid_wagon?(wagon)
+    @wagons << wagon
+    wagon.belongs_to = self
   end
 
   def unhook_wagon(wagon)
@@ -47,6 +45,8 @@ class Train
 
   def add_route(route)
     return if @route != nil
+
+    valid_route(route)
     @route = route
     @route.stations[0].arrive(self)
   end
@@ -68,20 +68,35 @@ class Train
   end
 
   def next_station
-    return puts 'Нет маршрута' if @route == nil
+    return if @route == nil
 
     @route.stations[@station_index + 1]
   end
 
   def current_station
-    return puts 'Нет маршрута' if @route == nil
+    return  if @route == nil
 
     @route.stations[@station_index]
   end
 
   def prev_station
-    return puts 'Нет маршрута' if @route == nil
+    return if @route == nil
 
     @route.stations[@station_index - 1] unless @station_index.zero?
   end
+
+  protected
+
+  def validation!
+    raise 'Не корректный номер' if @number !~ REGEXP_NUMBER
+    raise 'Не соответствие типов' if (@type != 'cargo' && @type != 'passenger')
+  end
+
+  def valid_wagon?(wagon)
+    raise 'Тип вагона не совпадает с типом поезда' if wagon.type != self.type
+  end
+
+  def valid_route(route)
+    raise 'Это не маршрут!' if route.class != Route
+  end  
 end

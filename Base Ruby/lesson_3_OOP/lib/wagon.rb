@@ -7,5 +7,12 @@ class Wagon
     #passenger || cargo
     @type = type
     @belongs_to = nil
+    validation!
   end
+
+  protected
+
+  def validation!
+    raise 'Не соответствие типов' if (@type != 'cargo' && @type != 'passenger')
+  end  
 end

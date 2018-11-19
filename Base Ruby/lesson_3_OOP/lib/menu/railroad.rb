@@ -135,13 +135,16 @@ class RailRoad
 
   def assign_route_train(train)
     return error 'Создайте маршрут' if @routes.size.zero?
-   
+   begin
     puts 'Выберите порядковый номер маршрута'
-    @routes.each_with_index { |route, i| puts "#{i+1} - #{route}" }
+    @routes.each_with_index { |route, i| puts "#{i} - #{route}" }
     route = gets.chomp.to_i
-    return error 'Выбор некорректен' unless (@routes[route - 1] || route.zero?)
-
-    train.add_route(@routes[route - 1])
+    train.add_route(@routes[route])
+   rescue => exception
+     puts exception
+     retry
+   end
+    
   end
 
   def move(train)

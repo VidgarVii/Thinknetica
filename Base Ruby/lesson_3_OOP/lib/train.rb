@@ -22,7 +22,7 @@ class Train
     @route = nil
     @station_index = 0
     @wagons = []
-    validation!
+    validate!
   end
 
   def add_speed
@@ -87,7 +87,7 @@ class Train
 
   protected
 
-  def validation!
+  def validate!
     raise 'Не корректный номер' if @number !~ REGEXP_NUMBER
     raise 'Не соответствие типов' if (@type != 'cargo' && @type != 'passenger')
   end

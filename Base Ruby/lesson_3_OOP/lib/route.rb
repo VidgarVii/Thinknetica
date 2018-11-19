@@ -5,7 +5,7 @@ class Route
   def initialize(first_state, last_state)
     register_instance
     @stations = [first_state, last_state]
-    validation!
+    validate!
   end
 
   def add_station(station, position = -2)
@@ -23,7 +23,7 @@ class Route
 
   private
 
-  def validation!
+  def validate!
     @stations.each do |station|
       raise 'Маршрут должен состоять из станций' if station.class != Station
     end

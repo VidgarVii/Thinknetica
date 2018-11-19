@@ -12,7 +12,7 @@ class Station
     register_instance
     @name = name
     @list_train = []
-    validation!
+    validate!
   end
 
   def arrive(train)
@@ -31,7 +31,7 @@ class Station
 
   private
 
-  def validation!
+  def validate!
     raise 'Название станции должно содержать более 3х символов' if @name.size < 3
   end
 end

@@ -178,11 +178,14 @@ class RailRoad
   end
 
   def create_station
-    puts 'Название станции'
-    name = gets.chomp
-    return error 'Станция должна иметь название' if name == ''
-
-    @stations << Station.new(name)
+    begin
+      puts 'Введите название станции'
+      name = gets.chomp
+      @stations << Station.new(name)
+    rescue => exception
+    puts exception
+    retry
+    end    
   end
 
   def create_train

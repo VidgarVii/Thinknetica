@@ -85,6 +85,10 @@ class Train
     @route.stations[@station_index - 1] unless @station_index.zero?
   end
 
+  def valid?
+    @maker.class == String
+  end  
+
   protected
 
   def validate!
@@ -98,5 +102,5 @@ class Train
 
   def valid_route(route)
     raise 'Это не маршрут!' if route.class != Route
-  end  
+  end
 end

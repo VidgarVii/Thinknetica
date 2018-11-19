@@ -10,6 +10,10 @@ class Wagon
     @belongs_to = nil    
   end
 
+  def valid?
+    @maker.class == String
+  end
+
   protected
 
   def validate!

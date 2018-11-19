@@ -6,8 +6,8 @@ class Wagon
   def initialize(type)
     #passenger || cargo
     @type = type
-    @belongs_to = nil
     validate!
+    @belongs_to = nil    
   end
 
   protected

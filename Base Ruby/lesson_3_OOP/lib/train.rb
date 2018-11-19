@@ -14,15 +14,15 @@ class Train
 
   def initialize(number, type)
     #passenger || cargo
-    @@trains << self
-    register_instance
     @number = number
     @type = type
+    validate!
+    @@trains << self
+    register_instance    
     @speed = 0
     @route = nil
     @station_index = 0
     @wagons = []
-    validate!
   end
 
   def add_speed

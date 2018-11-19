@@ -8,11 +8,12 @@ class Station
   end
 
   def initialize(name)
-    @@stations << self
-    register_instance
     @name = name
-    @list_train = []
     validate!
+    @@stations << self
+    register_instance    
+    @list_train = []
+    
   end
 
   def arrive(train)

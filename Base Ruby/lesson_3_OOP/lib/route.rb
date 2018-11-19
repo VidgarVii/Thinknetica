@@ -3,13 +3,13 @@ class Route
   attr_reader :stations
 
   def initialize(first_state, last_state)
+    validate!(first_state, last_state)
     register_instance
-    @stations = [first_state, last_state]
-    validate!
+    @stations = [first_state, last_state]    
   end
 
   def add_station(station, position = -2)
-    valid_position(position)
+    valid_add_station(station, position)
     @stations.insert(position, station)
   end
 
@@ -23,13 +23,13 @@ class Route
 
   private
 
-  def validate!
-    @stations.each do |station|
-      raise 'Маршрут должен состоять из станций' if station.class != Station
-    end
+  def validate!(first_state, last_state)
+    raise 'Маршрут должен состоять из станций' if (first_state.class != Station || last_state.class != Station)
+    raise 'Маршрут должен состоять из разных станций' if first_state === last_state
   end
   
-  def valid_position(position)
+  def valid_add_station(station, position)
+    raise 'Маршрут должен состоять из станций' if station.class != Station
     raise 'Вы пытаетесь добавить станцию в конец или в начало пути' unless [-2, (1...@stations.size)].include?(position)
   end
 end

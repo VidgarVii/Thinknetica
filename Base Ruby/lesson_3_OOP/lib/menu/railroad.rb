@@ -86,16 +86,21 @@ class RailRoad
   end
 
   def add_station_route(route)
-    stations = @stations - route.stations
-    return error 'Создайте станцию' if stations.size.zero?
+    stations = Station.all - route.stations
+    return error 'Создайте станцию' if stations.size.zero?   
   
-    stations.each_with_index do |station, i|
-      puts "#{i} - #{station.name}"
+    begin
+      stations.each_with_index do |station, i|
+        puts "#{i} - #{station.name}"
+      end
+      puts 'Выберите станцию'
+      station = gets.chomp.to_i
+      route.add_station(stations[station])
+    rescue => exception
+      puts exception
+      retry
     end
-
-    puts 'Выберите станцию'
-    station = gets.chomp.to_i
-    route.add_station(stations[station])
+    
   end
 
   def rm_station_route(route)
@@ -153,15 +158,19 @@ class RailRoad
     
     wagons = @wagons.select do |wagon| 
       wagon.type == train.type && wagon.belongs_to.nil?
-    end    
-    wagons.each_with_index do |wagon, i|     
-        puts "#{i} - #{wagon} : #{wagon.type}"
     end
-    puts 'Выберите порядковый номер вагона'
-    wagon = gets.chomp.to_i
-    return error 'Выбор некорректен' unless wagons[wagon]
 
-    train.hook_wagon(wagons[wagon])
+    begin
+      wagons.each_with_index do |wagon, i|     
+        puts "#{i} - #{wagon} : #{wagon.type}"
+      end
+      puts 'Выберите порядковый номер вагона'
+      wagon = gets.chomp.to_i
+      train.hook_wagon(wagons[wagon])
+    rescue => exception
+      puts exception
+      retry
+    end    
   end
 
   def unhook_wagon(train)
@@ -207,26 +216,21 @@ class RailRoad
   end
 
   def create_route    
-    return error 'Создайте 2 станции' if @stations.size < 2
-    
-    @stations.each_with_index { |station, i| puts "#{i} - #{station.name}" }
-    puts 'Выберите начальную станцию'
-    start = gets.chomp.to_i    
-    puts 'Выберите конечную станцию'
-    finish = gets.chomp.to_i
+    return error 'Создайте 2 станции' if @stations.size < 2 
 
-    if ((0...@stations.size).include?(finish) && (0...@stations.size).include?(start))
-      if Station.all[start] == Station.all[finish]
-        puts 'Нельзя создать маршрут с 1 станцией'
-        enter = gets
-        return
-      end
+    begin
+      @stations.each_with_index { |station, i| puts "#{i} - #{station.name}" }
+      puts 'Выберите начальную станцию'
+      start = gets.chomp.to_i    
+      puts 'Выберите конечную станцию'
+      finish = gets.chomp.to_i
       @routes << Route.new(Station.all[start], Station.all[finish])
-    else
-      puts 'Выбор станций не корректен'
-      enter = gets
-      return
-    end    
+    rescue => exception
+      puts exception
+      retry
+    end
+      
+    
   end
 
   def create_wagon
@@ -239,8 +243,8 @@ class RailRoad
   def create_all
     @wagons << Wagon.new('passenger')
     @wagons << Wagon.new('cargo')
-    @trains << Train.new('Train 0001', 'passenger')
-    @trains << Train.new('Train 0002', 'cargo')
+    @trains << Train.new('001-01', 'passenger')
+    @trains << Train.new('002-01', 'cargo')
     @stations << Station.new('Трансильвания')
     @stations << Station.new('Пенсильвания')
     @routes << Route.new(@stations[0], @stations[1])

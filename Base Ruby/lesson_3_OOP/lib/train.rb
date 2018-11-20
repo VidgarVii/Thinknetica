@@ -100,9 +100,9 @@ class Train
     raise 'Не соответствие типов' if (@type != 'cargo' && @type != 'passenger')
   end
 
-  def valid_wagon!(wagon)
-    raise 'Тип вагона не совпадает с типом поезда' if wagon.type != self.type
-  end
+  #def valid_wagon!(wagon)
+  #  raise 'Тип вагона не совпадает с типом поезда' if wagon.type != self.type
+  #end
 
   def valid_route(route)
     raise 'Это не маршрут!' if route.class != Route

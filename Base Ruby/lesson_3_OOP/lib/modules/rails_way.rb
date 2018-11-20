@@ -6,12 +6,6 @@ module RailsWay
     @maker = name    
   end
 
-  def cargo?
-  end
-
-  def passenger?    
-  end
-  
   protected
 
   def valid_maker!(name)

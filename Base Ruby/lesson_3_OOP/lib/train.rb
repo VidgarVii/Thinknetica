@@ -4,6 +4,7 @@ class Train
   attr_reader :speed, :count_railwaycar, :number, :wagons, :type, :route
   @@trains = []
   REGEXP_NUMBER = /^\w{3}-?\w{2}$/
+
   def self.all
     @@trains
   end
@@ -43,6 +44,10 @@ class Train
     @wagons.delete(wagon)
   end
 
+  def each_wagon
+    @wagons.each { |wagon| yield(wagon) }
+  end
+  
   def add_route(route)
     return if @route != nil
 

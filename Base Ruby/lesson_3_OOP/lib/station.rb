@@ -24,6 +24,10 @@ class Station
     @list_train.delete(train)
   end
 
+  def each_train
+    @list_train.each { |train| yield(train) }
+  end
+
   def list_train_by_type(type)
     #type = passenger || cargo
     trains = @list_train.select{ |train| train.type == type }

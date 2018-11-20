@@ -1,4 +1,10 @@
 class RailRoad
+
+  # R - При создании вагона указывать кол-во мест или общий объем, в зависимости от типа вагона
+  # Выводить список вагонов у поезда (в указанном выше формате), используя созданные методы
+  # Выводить список поездов на станции (в указанном выше формате), используя  созданные методы
+  # Занимать место или объем в вагоне
+
   def initialize
     @stations = []
     @trains = []
@@ -34,6 +40,14 @@ class RailRoad
     puts 'Список поездов:'
     @trains.each { |train| show_train(train) }
     puts "\nСписок станций:"
+
+    # Переписать кастыль с использованием метода с блоком.
+    # Формат - Номер поезда, тип, кол-во вагонов
+    # Для каждого поезда на станции выводить список вагонов в формате - 
+    # Номер вагона (можно назначать автоматически), тип вагона, 
+    # кол-во свободных и занятых мест (для пассажирского вагона) или 
+    # кол-во свободного и занятого объема (для грузовых вагонов).
+
     @stations.each do |item| 
       puts "- #{item.name} : Список ожидающих поездов: 
       Грузовые:" 
@@ -41,6 +55,8 @@ class RailRoad
       puts '  Пассажирские:'
       item.list_train_by_type('passenger')
     end  
+
+
     puts 'Список маршрутов:'
     @routes.each_with_index do |route, index| 
       print "\n#{index} - "
@@ -238,9 +254,18 @@ class RailRoad
 
   def create_wagon
     puts MENU[:type]
-    type = gets.chomp.to_i
-    @wagons << PassengerWagon.new if type == 1 
-    @wagons << CargoTrain.new if type == 2
+    type = gets.chomp
+
+    case type
+    when '1'
+      puts 'Укажите кол-во мест'
+      num = gets.chomp
+      @wagons << PassengerWagon.new(num) if type == 1 
+    when '2'
+      puts 'Укажите общий объем вагона'
+      num = gets.chomp
+      @wagons << CargoWagon.new(num) if type == 2
+    end
   end
 
   def create_all

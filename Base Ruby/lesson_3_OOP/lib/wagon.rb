@@ -11,7 +11,11 @@ class Wagon
   end
 
   def valid?
-    @maker.class == String
+    validate!
+    valid_maker!(@maker)
+    true
+  rescue
+    false
   end
 
   protected

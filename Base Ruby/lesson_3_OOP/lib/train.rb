@@ -34,7 +34,7 @@ class Train
   end
 
   def hook_wagon(wagon) 
-    valid_wagon?(wagon)
+    valid_wagon!(wagon)
     @wagons << wagon
     wagon.belongs_to = self
   end
@@ -86,7 +86,11 @@ class Train
   end
 
   def valid?
-    @maker.class == String
+    validate!
+    valid_maker!(@maker)
+    true
+  rescue
+    false
   end  
 
   protected
@@ -96,7 +100,7 @@ class Train
     raise 'Не соответствие типов' if (@type != 'cargo' && @type != 'passenger')
   end
 
-  def valid_wagon?(wagon)
+  def valid_wagon!(wagon)
     raise 'Тип вагона не совпадает с типом поезда' if wagon.type != self.type
   end
 

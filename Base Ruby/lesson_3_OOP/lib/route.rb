@@ -2,10 +2,10 @@ class Route
   include InstanceCounter
   attr_reader :stations
 
-  def initialize(first_state, last_state)
-    validate!(first_state, last_state)
-    register_instance
-    @stations = [first_state, last_state]    
+  def initialize(first_state, last_state)    
+    @stations = [first_state, last_state]
+    #validate!
+    register_instance  
   end
 
   def add_station(station, position = -2)
@@ -21,11 +21,20 @@ class Route
     @stations.each { |station| print "#{station.name} |" }
   end
 
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+
   private
 
-  def validate!(first_state, last_state)
-    raise 'Маршрут должен состоять из станций' if (first_state.class != Station || last_state.class != Station)
-    raise 'Маршрут должен состоять из разных станций' if first_state === last_state
+  def validate!
+    @stations.each do |station|
+      raise 'Маршрут должен состоять из станций' if station.class != Station
+    end
+    raise 'Тупиковые станции не должны совпадать' if @stations[0] === @stations[-1]
   end
   
   def valid_add_station(station, position)

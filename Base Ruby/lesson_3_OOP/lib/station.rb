@@ -30,6 +30,13 @@ class Station
     trains.each { |train| puts train.number }
   end
 
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+  
   private
 
   def validate!

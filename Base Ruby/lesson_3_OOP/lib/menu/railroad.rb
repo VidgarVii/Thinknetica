@@ -153,12 +153,12 @@ class RailRoad
     puts MENU[:train]
     choice = gets.chomp
     
-    
     case choice
-    when '1' then assign_route_train(@trains[train])
-    when '2' then hook_wagon(@trains[train])
-    when '3' then unhook_wagon(@trains[train])
-    when '4' then move(@trains[train]) 
+    when '1' then assign_route_train(train)
+    when '2' then hook_wagon(train)
+    when '3' then unhook_wagon(train)
+    when '4' then move(train)
+    when '5' then occupated_wagon(train)
     end
   end
 

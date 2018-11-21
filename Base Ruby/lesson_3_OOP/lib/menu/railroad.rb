@@ -1,10 +1,5 @@
 class RailRoad
   include CheckObject
-  attr_reader :wagons
-  # R - При создании вагона указывать кол-во мест или общий объем, в зависимости от типа вагона
-  # Выводить список вагонов у поезда (в указанном выше формате), используя созданные методы
-  # Выводить список поездов на станции (в указанном выше формате), используя  созданные методы
-  # Занимать место или объем в вагоне
 
   def initialize
     @stations = []
@@ -37,33 +32,27 @@ class RailRoad
 
   def puts_all
     system('clear')
-    puts 'Список поездов:'
+    print 'Список поездов:'
     @trains.each { |train| show_train(train) }
+
     puts "\nСписок станций:"
+    @stations.each_with_index do |item, index| 
+      puts "#{index} - #{item.name} : Список ожидающих поездов: "
 
-    # Переписать кастыль с использованием метода с блоком.
-    # Формат - Номер поезда, тип, кол-во вагонов
-    # Для каждого поезда на станции выводить список вагонов в формате - 
-    # Номер вагона (можно назначать автоматически), тип вагона, 
-    # кол-во свободных и занятых мест (для пассажирского вагона) или 
-    # кол-во свободного и занятого объема (для грузовых вагонов).
+      item.each_trains do |train|
+        puts "# #{train.number}, #{train.type}, кол-во вагонов - #{train.wagons.size}" 
+        train.each_wagons { |wagon| puts about_wagon(wagon) }
+      end  
+    end
 
-    @stations.each do |item| 
-      puts "- #{item.name} : Список ожидающих поездов: 
-      Грузовые:" 
-      item.list_train_by_type('cargo')
-      puts '  Пассажирские:'
-      item.list_train_by_type('passenger')
-    end  
-
-
-    puts 'Список маршрутов:'
+    print 'Список маршрутов:'
     @routes.each_with_index do |route, index| 
       print "\n#{index} - "
       route.puts_stations
-     end     
+     end
+
     puts "\nСписок вагонов:"
-    @wagons.each { |item| puts "- #{item} : #{item.belongs_to}" }
+    @wagons.each { |wagon| puts about_wagon(wagon) }
     puts 'Нажмите Enter'
     wait = gets
   end
@@ -134,23 +123,32 @@ class RailRoad
     system('clear')
     return error 'Создайте поезд' if @trains.size.zero?
 
-    puts 'Выберите поезд'
-    
-    @trains.each_with_index do |train, i|
-      puts "#{i} - #{train.number} : #{train.type} : Кол-во вагонов - #{train.wagons.size}"
+    begin
+      puts 'Выберите поезд'    
+      @trains.each_with_index do |train, i|
+        puts "#{i} - #{train.number} : #{train.type} : Кол-во вагонов - #{train.wagons.size}"
+      end
+      train = gets.chomp.to_i
+      check_train!(@trains[train])
+    rescue
+      retry
     end
 
-    train = gets.chomp.to_i
-    check_train!(@trains[train])
-    train_menu(@trains[train])
-  rescue
-    retry        
+  train_menu(@trains[train])
   end
-  
 
   def train_menu(train) 
-    puts train.class
+    system('clear')
+    puts "Выбран #{train.class} : #{train.number}"
+    train.each_wagons do |wagon| 
+      print "Номер вагона: #{wagon.number} Мест - " 
+      puts "Свободно #{wagon.free_volume}/ Занято #{wagon.occupied_volume}" if train.class == CargoTrain
+      puts "#{wagon.free_seats}/#{wagon.occupied_seats}" if train.class == PassengerTrain
+    end
     puts MENU[:train]
+    puts MENU[:for_booking][0] if (train.class == PassengerTrain && train.wagons.size != 0)
+    puts MENU[:for_booking][1] if (train.class == CargoTrain && train.wagons.size != 0)
+
     choice = gets.chomp
     
     case choice
@@ -158,12 +156,29 @@ class RailRoad
     when '2' then hook_wagon(train)
     when '3' then unhook_wagon(train)
     when '4' then move(train)
-    when '5' then occupated_wagon(train)
+    when '5'
+      return error 'Мест нет' unless is_there_space?(train)
+      book_seats_in_wagon(train) if train.type == 'passenger'
+      load_in_wagon(train) if train.type == 'cargo'
     end
+  end
+  
+  def book_seats_in_wagon(train)
+    train.each_wagons do |wagon|
+      unless wagon.free.zero?
+        wagon.take_seat 
+        return
+      end
+    end
+  end
+
+  def load_in_wagon(train)
+    puts ''
   end
 
   def assign_route_train(train)
     return error 'Создайте маршрут' if @routes.size.zero?
+
    begin
     puts 'Выберите порядковый номер маршрута'
     @routes.each_with_index { |route, i| puts "#{i} - #{route}" }
@@ -282,8 +297,8 @@ class RailRoad
   end
 
   def create_all
-    @wagons << Wagon.new('passenger')
-    @wagons << Wagon.new('cargo')
+    @wagons << PassengerWagon.new
+    @wagons << CargoWagon.new
     @trains << Train.new('001-01', 'passenger')
     @trains << Train.new('002-01', 'cargo')
     @stations << Station.new('Трансильвания')
@@ -295,11 +310,15 @@ class RailRoad
     puts "\n#{train.type}: #{train.number}"
     count = train.wagons.size
     puts "Кол-во вагонов: #{count}" 
-    puts WAGONS[count]   
+    puts WAGONS[count]
   end
 
   def error(message)
     puts message
     enter = gets    
   end
+
+  def about_wagon(wagon)
+    "# #{wagon.number}, #{wagon.type}, Всего мест - #{wagon.free + wagon.occupied}, Свободные места - #{wagon.free} / Занятых мест - #{wagon.occupied}"    
+  end  
 end

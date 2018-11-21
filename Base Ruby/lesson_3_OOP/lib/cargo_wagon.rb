@@ -1,5 +1,7 @@
 class CargoWagon < Wagon
   attr_reader :free_volume, :occupied_volume
+  alias :free :free_volume
+  alias :occupied :occupied_volume
 
   def initialize(volume = 86.4)
     super('cargo')

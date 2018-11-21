@@ -1,5 +1,7 @@
 class PassengerWagon < Wagon
   attr_reader :free_seats, :occupied_seats
+  alias :free :free_seats
+  alias :occupied :occupied_seats
 
   def initialize(seats=30)
     super('passenger')

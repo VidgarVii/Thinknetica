@@ -1,4 +1,5 @@
 class RailRoad
+  include CheckObject
   attr_reader :wagons
   # R - При создании вагона указывать кол-во мест или общий объем, в зависимости от типа вагона
   # Выводить список вагонов у поезда (в указанном выше формате), используя созданные методы
@@ -29,7 +30,7 @@ class RailRoad
     case choice
     when '1' then create_menu
     when '2' then route_menu
-    when '3' then train_menu 
+    when '3' then choice_train
     when '4' then puts_all
     end
   end
@@ -129,17 +130,30 @@ class RailRoad
     route.rm_staion(route.stations[station])
   end
 
-  def train_menu
+  def choice_train
     system('clear')
     return error 'Создайте поезд' if @trains.size.zero?
 
+    puts 'Выберите поезд'
+    
+    @trains.each_with_index do |train, i|
+      puts "#{i} - #{train.number} : #{train.type} : Кол-во вагонов - #{train.wagons.size}"
+    end
+
+    train = gets.chomp.to_i
+    check_train!(@trains[train])
+    train_menu(@trains[train])
+  rescue
+    retry        
+  end
+  
+
+  def train_menu(train) 
+    puts train.class
     puts MENU[:train]
     choice = gets.chomp
-    @trains.each_with_index do |train, i|
-      puts "#{i} - #{train.number}:#{train.type}"
-    end
-    puts 'Выберите поезд'
-    train = gets.chomp.to_i
+    
+    
     case choice
     when '1' then assign_route_train(@trains[train])
     when '2' then hook_wagon(@trains[train])

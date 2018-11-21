@@ -1,5 +1,5 @@
 class RailRoad
-
+  attr_reader :wagons
   # R - При создании вагона указывать кол-во мест или общий объем, в зависимости от типа вагона
   # Выводить список вагонов у поезда (в указанном выше формате), используя созданные методы
   # Выводить список поездов на станции (в указанном выше формате), используя  созданные методы
@@ -17,7 +17,6 @@ class RailRoad
     loop do
       system('clear')
       puts MENU[:main]
-      puts '0 - Выйти из программы.'
       choice = gets.chomp
       break if choice == '0'
       next_menu(choice)
@@ -260,11 +259,11 @@ class RailRoad
     when '1'
       puts 'Укажите кол-во мест'
       num = gets.chomp
-      @wagons << PassengerWagon.new(num) if type == 1 
+      @wagons << PassengerWagon.new(num)
     when '2'
       puts 'Укажите общий объем вагона'
       num = gets.chomp
-      @wagons << CargoWagon.new(num) if type == 2
+      @wagons << CargoWagon.new(num)
     end
   end
 

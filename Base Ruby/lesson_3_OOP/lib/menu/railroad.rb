@@ -294,9 +294,7 @@ class RailRoad
     rescue => exception
       puts exception
       retry
-    end
-      
-    
+    end    
   end
 
   def create_wagon

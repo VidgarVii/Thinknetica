@@ -1,6 +1,5 @@
   class RailRoad
   include CheckObject
-  attr_reader :wagons
 
   def initialize
     @stations = []

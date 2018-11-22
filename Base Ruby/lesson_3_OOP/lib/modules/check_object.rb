@@ -1,10 +1,10 @@
 module CheckObject
   def check_wagon!(wagon)
-    %w(Wagon PassengerWagon CargoWagon).include?(wagon.class)
+    raise 'Выбор не корректен' unless %w(Wagon PassengerWagon CargoWagon).include?(wagon.class.to_s)
   end
 
   def check_train!(train)
-    %w(Train PassengerTrain CargoTrain).include?(train.class)
+    raise 'Выбор не корректен' unless %w(Train PassengerTrain CargoTrain).include?(train.class.to_s)
   end
 
   def error(message)
@@ -16,6 +16,10 @@ module CheckObject
     @wagons.find { |wagon| wagon.class == CargoWagon } ? true : false
   end
 
+  def check_space_in_wagon!(wagon)
+    raise ' Мест нет' if wagon.free.zero?
+  end
+  
   def is_there_space?(train)
     count_seats = 0
     train.each_wagons do |wagon|

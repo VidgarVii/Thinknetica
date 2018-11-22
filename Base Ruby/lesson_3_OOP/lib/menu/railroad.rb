@@ -1,6 +1,4 @@
-# 1 Погруить в торговый вагон 1 при объеме 1
-
-class RailRoad
+  class RailRoad
   include CheckObject
   attr_reader :wagons
 
@@ -34,7 +32,7 @@ class RailRoad
     when '5'
       return unless do_have_corgo_wagon?
 
-      load_in_wagon
+      choice_cargo_wagon
     end
   end
 
@@ -138,13 +136,33 @@ class RailRoad
       end
       train = gets.chomp.to_i
       check_train!(@trains[train])
-    rescue
-      retry
+    rescue => exception
+      error exception
+      return
     end
 
-  train_menu(@trains[train])
+    train_menu(@trains[train])
   end
 
+  def choice_cargo_wagon
+    system('clear')
+    begin
+      puts 'Выберите вагон'
+      wagons = @wagons.select { |wagon| wagon.class == CargoWagon }
+      wagons.each_with_index do |wagon, index|
+        puts "#{index} - Товарный вагон ##{wagon.number}. Свободный объем #{wagon.free} м³"
+      end
+      choice = gets.chomp.to_i
+      check_wagon!(wagons[choice])
+      check_space_in_wagon!(wagons[choice])
+    rescue => exception
+      error exception
+      return
+    end    
+
+    load_in_wagon(wagons[choice])
+  end
+  
   def train_menu(train) 
     system('clear')
     puts "Выбран #{train.class} : #{train.number}"
@@ -179,21 +197,14 @@ class RailRoad
     end
   end
 
-  def load_in_wagon
-    puts 'Выберите вагон'
-    wagons = @wagons.select {|wagon| wagon.class == CargoWagon }
-    wagons.each_with_index do |wagon, index|
-      puts "#{index} - Товарный вагон ##{wagon.number}. Свободный объем #{wagon.free} м³"
-    end
-    choice = gets.chomp.to_i
-    
+  def load_in_wagon(wagon)        
     begin
-      p wagons[choice]
+      p wagon
       puts 'Какой объем товаров хотите погрузить?'
       goods_volume = gets.chomp.to_f
-      wagons[choice].take_volume(goods_volume)
+      wagon.take_volume(goods_volume)
     rescue => exception
-      puts exception
+      error exception
       return
     end
   end
@@ -201,15 +212,15 @@ class RailRoad
   def assign_route_train(train)
     return error 'Создайте маршрут' if @routes.size.zero?
 
-   begin
-    puts 'Выберите порядковый номер маршрута'
-    @routes.each_with_index { |route, i| puts "#{i} - #{route}" }
-    route = gets.chomp.to_i
-    train.add_route(@routes[route])
-   rescue => exception
-     puts exception
-     retry
-   end
+    begin
+      puts 'Выберите порядковый номер маршрута'
+      @routes.each_with_index { |route, i| puts "#{i} - #{route}" }
+      route = gets.chomp.to_i
+      train.add_route(@routes[route])
+    rescue => exception
+      error exception
+      retry
+    end
     
   end
 
@@ -235,10 +246,11 @@ class RailRoad
       end
       puts 'Выберите порядковый номер вагона'
       wagon = gets.chomp.to_i
+      check_wagon!(wagons[wagon])
       train.hook_wagon(wagons[wagon])
     rescue => exception
-      puts exception
-      retry
+      error exception
+      return
     end    
   end
 
@@ -308,11 +320,13 @@ class RailRoad
     when '1'
       puts 'Укажите кол-во мест'
       num = gets.chomp.to_i
-      @wagons << PassengerWagon.new(num)
+      @wagons << PassengerWagon.new(num) if num > 0
+      @wagons << PassengerWagon.new() if num.zero?
     when '2'
       puts 'Укажите общий объем вагона'
       num = gets.chomp.to_i
-      @wagons << CargoWagon.new(num)
+      @wagons << CargoWagon.new(num) if num > 0
+      @wagons << CargoWagon.new() if num.zero?
     end
   end
 

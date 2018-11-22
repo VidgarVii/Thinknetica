@@ -1,10 +1,13 @@
+# 1 Погруить в торговый вагон 1 при объеме 1
+
 class RailRoad
   include CheckObject
+  attr_reader :wagons
 
   def initialize
     @stations = []
     @trains = []
-    @wagons = [CargoWagon.new()]
+    @wagons = []
     @routes = []
     puts WELOCOME
   end
@@ -191,7 +194,7 @@ class RailRoad
       wagons[choice].take_volume(goods_volume)
     rescue => exception
       puts exception
-      retry
+      return
     end
   end
 
@@ -304,11 +307,11 @@ class RailRoad
     case type
     when '1'
       puts 'Укажите кол-во мест'
-      num = gets.chomp
+      num = gets.chomp.to_i
       @wagons << PassengerWagon.new(num)
     when '2'
       puts 'Укажите общий объем вагона'
-      num = gets.chomp
+      num = gets.chomp.to_i
       @wagons << CargoWagon.new(num)
     end
   end

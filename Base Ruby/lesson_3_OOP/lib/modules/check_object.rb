@@ -13,7 +13,7 @@ module CheckObject
   end
 
   def do_have_corgo_wagon?
-    @wagons.size.zero? ? false : true
+    @wagons.find { |wagon| wagon.class == CargoWagon } ? true : false
   end
 
   def is_there_space?(train)

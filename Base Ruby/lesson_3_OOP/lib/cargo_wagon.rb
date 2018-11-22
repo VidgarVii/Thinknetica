@@ -18,6 +18,6 @@ class CargoWagon < Wagon
   private
 
   def check_free_volume!(volume)
-    raise 'Мест нет' if (@free_volume - volume) <= 0 
+    raise 'Мест нет' if (@free_volume - volume) < 0 
   end
 end

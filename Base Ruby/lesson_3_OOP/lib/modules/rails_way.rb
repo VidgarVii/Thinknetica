@@ -1,4 +1,4 @@
-module RailsWay
+module Manufactur
   attr_reader :maker
 
   def maker=(name)

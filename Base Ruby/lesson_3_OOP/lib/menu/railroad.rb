@@ -4,7 +4,7 @@ class RailRoad
   def initialize
     @stations = []
     @trains = []
-    @wagons = []
+    @wagons = [CargoWagon.new()]
     @routes = []
     puts WELOCOME
   end
@@ -13,6 +13,7 @@ class RailRoad
     loop do
       system('clear')
       puts MENU[:main]
+      puts MENU[:for_booking][1] if do_have_corgo_wagon?
       choice = gets.chomp
       break if choice == '0'
       next_menu(choice)
@@ -27,6 +28,10 @@ class RailRoad
     when '2' then route_menu
     when '3' then choice_train
     when '4' then puts_all
+    when '5'
+      return unless do_have_corgo_wagon?
+
+      load_in_wagon
     end
   end
 
@@ -147,7 +152,6 @@ class RailRoad
     end
     puts MENU[:train]
     puts MENU[:for_booking][0] if (train.class == PassengerTrain && train.wagons.size != 0)
-    puts MENU[:for_booking][1] if (train.class == CargoTrain && train.wagons.size != 0)
 
     choice = gets.chomp
     
@@ -158,8 +162,8 @@ class RailRoad
     when '4' then move(train)
     when '5'
       return error 'Мест нет' unless is_there_space?(train)
-      book_seats_in_wagon(train) if train.type == 'passenger'
-      load_in_wagon(train) if train.type == 'cargo'
+
+      book_seats_in_wagon(train) if train.type == 'passenger'     
     end
   end
   
@@ -172,8 +176,23 @@ class RailRoad
     end
   end
 
-  def load_in_wagon(train)
-    puts ''
+  def load_in_wagon
+    puts 'Выберите вагон'
+    wagons = @wagons.select {|wagon| wagon.class == CargoWagon }
+    wagons.each_with_index do |wagon, index|
+      puts "#{index} - Товарный вагон ##{wagon.number}. Свободный объем #{wagon.free} м³"
+    end
+    choice = gets.chomp.to_i
+    
+    begin
+      p wagons[choice]
+      puts 'Какой объем товаров хотите погрузить?'
+      goods_volume = gets.chomp.to_f
+      wagons[choice].take_volume(goods_volume)
+    rescue => exception
+      puts exception
+      retry
+    end
   end
 
   def assign_route_train(train)
@@ -311,11 +330,6 @@ class RailRoad
     count = train.wagons.size
     puts "Кол-во вагонов: #{count}" 
     puts WAGONS[count]
-  end
-
-  def error(message)
-    puts message
-    enter = gets    
   end
 
   def about_wagon(wagon)

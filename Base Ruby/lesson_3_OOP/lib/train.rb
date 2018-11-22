@@ -1,5 +1,5 @@
 class Train
-  include RailsWay
+  include Manufactur
   include InstanceCounter
   attr_reader :speed, :count_railwaycar, :number, :wagons, :type, :route
   @@trains = []

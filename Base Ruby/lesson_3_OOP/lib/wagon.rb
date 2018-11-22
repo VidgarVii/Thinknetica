@@ -1,5 +1,5 @@
 class Wagon
-  include RailsWay
+  include Manufactur
   include InstanceCounter
   attr_accessor :belongs_to
   attr_reader :type, :number

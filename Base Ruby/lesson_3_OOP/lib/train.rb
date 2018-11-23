@@ -10,16 +10,16 @@ class Train
   end
 
   def self.find(number)
-    @@trains.find { |train| train.number == number}    
+    @@trains.find { |train| train.number == number }
   end
 
   def initialize(number, type)
-    #passenger || cargo
+    # passenger || cargo
     @number = number
     @type = type
     validate!
     @@trains << self
-    register_instance    
+    register_instance
     @speed = 0
     @route = nil
     @station_index = 0
@@ -34,7 +34,7 @@ class Train
     @speed = 0
   end
 
-  def hook_wagon(wagon) 
+  def hook_wagon(wagon)
     valid_wagon!(wagon)
     @wagons << wagon
     wagon.belongs_to = self
@@ -47,9 +47,9 @@ class Train
   def each_wagons
     @wagons.each { |wagon| yield(wagon) }
   end
-  
+
   def add_route(route)
-    return if @route != nil
+    return unless @route.nil?
 
     valid_route(route)
     @route = route
@@ -60,7 +60,7 @@ class Train
     return unless next_station
 
     current_station.departure(self)
-    @station_index += 1 
+    @station_index += 1
     current_station.arrive(self)
   end
 
@@ -73,19 +73,19 @@ class Train
   end
 
   def next_station
-    return if @route == nil
+    return if @route.nil?
 
     @route.stations[@station_index + 1]
   end
 
   def current_station
-    return  if @route == nil
+    return if @route.nil?
 
     @route.stations[@station_index]
   end
 
   def prev_station
-    return if @route == nil
+    return if @route.nil?
 
     @route.stations[@station_index - 1] unless @station_index.zero?
   end
@@ -94,19 +94,19 @@ class Train
     validate!
     valid_maker!(@maker)
     true
-  rescue
+  rescue StandardError
     false
-  end  
+  end
 
   protected
 
   def validate!
     raise 'Не корректный номер' if @number !~ REGEXP_NUMBER
-    raise 'Не соответствие типов' if (@type != 'cargo' && @type != 'passenger')
+    raise 'Не соответствие типов' if @type != 'cargo' && @type != 'passenger'
   end
 
   def valid_wagon!(wagon)
-    raise 'Тип вагона не совпадает с типом поезда' if wagon.type != self.type
+    raise 'Тип вагона не совпадает с типом поезда' if wagon.type != type
   end
 
   def valid_route(route)

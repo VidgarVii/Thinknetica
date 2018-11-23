@@ -2,10 +2,10 @@ class Route
   include InstanceCounter
   attr_reader :stations
 
-  def initialize(first_state, last_state)    
+  def initialize(first_state, last_state)
     @stations = [first_state, last_state]
     validate!
-    register_instance  
+    register_instance
   end
 
   def add_station(station, position = -2)
@@ -24,7 +24,7 @@ class Route
   def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
 
@@ -36,7 +36,7 @@ class Route
     end
     raise 'Тупиковые станции не должны совпадать' if @stations[0] === @stations[-1]
   end
-  
+
   def valid_add_station(station, position)
     raise 'Маршрут должен состоять из станций' if station.class != Station
     raise 'Вы пытаетесь добавить станцию в конец или в начало пути' unless [-2, (1...@stations.size)].include?(position)

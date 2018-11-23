@@ -11,9 +11,8 @@ class Station
     @name = name
     validate!
     @@stations << self
-    register_instance    
+    register_instance
     @list_train = []
-    
   end
 
   def arrive(train)
@@ -29,18 +28,18 @@ class Station
   end
 
   def list_train_by_type(type)
-    #type = passenger || cargo
-    trains = @list_train.select{ |train| train.type == type }
+    # type = passenger || cargo
+    trains = @list_train.select { |train| train.type == type }
     trains.each { |train| puts train.number }
   end
 
   def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
-  
+
   private
 
   def validate!

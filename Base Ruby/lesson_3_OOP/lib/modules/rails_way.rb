@@ -3,7 +3,7 @@ module Manufactur
 
   def maker=(name)
     valid_maker!(name)
-    @maker = name    
+    @maker = name
   end
 
   protected

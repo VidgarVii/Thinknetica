@@ -3,12 +3,12 @@ class Wagon
   include InstanceCounter
   attr_accessor :belongs_to
   attr_reader :type, :number
-  
+
   def initialize(type)
-    #passenger || cargo
+    # passenger || cargo
     @type = type
     validate!
-    @belongs_to = nil    
+    @belongs_to = nil
     register_instance
     @number = self.class.instances
   end
@@ -17,13 +17,13 @@ class Wagon
     validate!
     valid_maker!(@maker)
     true
-  rescue
+  rescue StandardError
     false
   end
 
   protected
 
   def validate!
-    raise 'Не соответствие типов' if (@type != 'cargo' && @type != 'passenger')
-  end  
+    raise 'Не соответствие типов' if @type != 'cargo' && @type != 'passenger'
+  end
 end

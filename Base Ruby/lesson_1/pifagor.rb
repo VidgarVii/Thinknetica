@@ -3,7 +3,7 @@ triangle = []
 puts "Научная компания \"Рога и костыли\" приветствует Вас \n\
 Мы поможем Вам определить тип Вашего треугольника \n\
 Введите длину каждой стороны треугольника"
-puts '       
+puts '
              .
             / \
          a /   \ b
@@ -17,7 +17,7 @@ triangle << gets.chomp.to_f
 print 'c = '
 triangle << gets.chomp.to_f
 
-def pifagor? (triangle)
+def pifagor?(triangle)
   triangle.map! { |x| (x**2) }
   c = triangle.max
   triangle.delete c

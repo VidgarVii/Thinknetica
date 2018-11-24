@@ -7,3 +7,7 @@ Style/FrozenStringLiteralComment:
   
 Style/MutableConstant:
   Enabled: false
+
+Layout/AlignArray:
+  Exclude:
+    - 'Base Ruby/lesson_3_OOP/lib/menu/context.rb'

@@ -314,12 +314,12 @@ class RailRoad
     when '1'
       puts 'Укажите кол-во мест'
       num = gets.chomp.to_i
-      @wagons << PassengerWagon.new(num) if num > 0
+      @wagons << PassengerWagon.new(num) if num.positive?
       @wagons << PassengerWagon.new if num.zero?
     when '2'
       puts 'Укажите общий объем вагона'
       num = gets.chomp.to_i
-      @wagons << CargoWagon.new(num) if num > 0
+      @wagons << CargoWagon.new(num) if num.positive?
       @wagons << CargoWagon.new if num.zero?
     end
   end

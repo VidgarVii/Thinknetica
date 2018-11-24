@@ -10,7 +10,7 @@ c = gets.chomp.to_f
 
 d = b**2 - 4 * a * c
 
-if d < 0
+if d.negative?
   puts "\n Корней нет"
   abort
 else

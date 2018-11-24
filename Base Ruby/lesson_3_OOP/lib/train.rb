@@ -3,7 +3,7 @@ class Train
   include InstanceCounter
   attr_reader :speed, :count_railwaycar, :number, :wagons, :type, :route
   @@trains = []
-  REGEXP_NUMBER = /^\w{3}-?\w{2}$/
+  REGEXP_NUMBER = /^\w{3}-?\w{2}$/.freeze
 
   def self.all
     @@trains

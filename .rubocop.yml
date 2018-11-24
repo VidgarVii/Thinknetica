@@ -5,9 +5,13 @@ AllCops:
 Style/FrozenStringLiteralComment:
   Enabled: false
   
-Style/MutableConstant:
-  Enabled: false
-
 Layout/AlignArray:
   Exclude:
     - 'Base Ruby/lesson_3_OOP/lib/menu/context.rb'
+
+Metrics/AbcSize:
+  Max: 40
+
+Metrics/ClassLength:
+  Exclude:
+    - 'Base Ruby/lesson_3_OOP/lib/menu/railroad.rb'

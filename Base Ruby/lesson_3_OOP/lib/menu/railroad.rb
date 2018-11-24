@@ -17,24 +17,11 @@ class RailRoad
       choice = gets.chomp
       break if choice == '0'
 
-      next_menu(choice)
+      send(NEXT_MENU[choice]) unless NEXT_MENU[choice].nil?
     end
   end
 
   private
-
-  def next_menu(choice)
-    case choice
-    when '1' then create_menu
-    when '2' then route_menu
-    when '3' then choice_train
-    when '4' then puts_all
-    when '5'
-      return unless do_have_corgo_wagon?
-
-      choice_cargo_wagon
-    end
-  end
 
   def puts_all
     system('clear')
@@ -60,7 +47,7 @@ class RailRoad
     puts "\nСписок вагонов:"
     @wagons.each { |wagon| puts about_wagon(wagon) }
     puts 'Нажмите Enter'
-    wait = gets
+    gets
   end
 
   def create_menu
@@ -145,6 +132,8 @@ class RailRoad
 
   def choice_cargo_wagon
     system('clear')
+    return unless do_have_corgo_wagon?
+
     begin
       puts 'Выберите вагон'
       wagons = @wagons.select { |wagon| wagon.class == CargoWagon }
@@ -165,11 +154,13 @@ class RailRoad
   def train_menu(train)
     system('clear')
     puts "Выбран #{train.class} : #{train.number}"
+
     train.each_wagons do |wagon|
       print "Номер вагона: #{wagon.number} Мест - "
       puts "Свободно #{wagon.free_volume}/ Занято #{wagon.occupied_volume}" if train.class == CargoTrain
       puts "#{wagon.free_seats}/#{wagon.occupied_seats}" if train.class == PassengerTrain
     end
+
     puts MENU[:train]
     puts MENU[:for_booking][0] if train.class == PassengerTrain && !train.wagons.empty?
 

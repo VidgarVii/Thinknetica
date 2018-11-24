@@ -11,16 +11,6 @@ Lint/NonLocalExitFromIterator:
   Exclude:
     - 'Base Ruby/lesson_3_OOP/lib/menu/railroad.rb'
 
-# Offense count: 2
-Lint/UselessAssignment:
-  Exclude:
-    - 'Base Ruby/lesson_3_OOP/lib/menu/railroad.rb'
-    - 'Base Ruby/lesson_3_OOP/lib/modules/check_object.rb'
-
-# Offense count: 13
-Metrics/AbcSize:
-  Max: 40
-
 # Offense count: 1
 # Configuration parameters: CountComments.
 Metrics/ClassLength:

@@ -19,9 +19,11 @@ module Validation
     def validate!
       self.class.options.each do |key|
         instance = key.keys[0].to_s
-        puts key.values[0].values if key.values[0][:type]
-        puts key.values[0].values if key.values[0][:presence]
-        eval("presence!(@#{instance})") if key.values[0][:format]
+        arg = key.values[0].values[0]
+       
+        #puts key.values[0].values if key.values[0][:type]
+        eval("presence!(@#{instance})") if key.values[0][:presence]
+        eval("format!(@#{instance}, arg)") if key.values[0][:format]
       end
     end
 
@@ -59,4 +61,5 @@ class A
   end  
 end
 
-a = A.new('sss')
+a = A.new('A-Z')
+

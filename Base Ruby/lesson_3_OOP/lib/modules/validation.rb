@@ -5,14 +5,20 @@ module Validation
   end
 
   module ClassMethods
-    def validate(name, opts, *arg)
-      var = "@#{name}".to_sym
-      p instance_methods
+    attr_reader :options
+
+    def validate(name, option, arg = nil)
+      @options ||= {}
+      @options[name] = [option => arg]
     end
   end
 
   module InstanceMethods
     protected
+
+    def validate!
+      
+    end
 
     def valid?
       validate!
@@ -20,16 +26,10 @@ module Validation
     rescue
       false
     end
-    
-    
-    def validate!
-      
-    end
 
     def type!(instance, class_name)
       raise 'Не совпадает класс' unless instance.class == class_name
     end
-    
 
     def format!(instance, format)
       raise 'Формат не корректен' if instance !~ format
@@ -54,7 +54,9 @@ class A
   end  
 end
 
-a = A.new('')
+a = A.new('sss')
 p a.instance_variables
-puts a.instance_variable_get(:@name)
+p A.instance_variables
+p a.class.options
+
 

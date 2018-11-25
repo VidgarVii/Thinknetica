@@ -8,8 +8,8 @@ module Validation
     attr_reader :options
 
     def validate(name, option, arg = nil)
-      @options ||= {}
-      @options[name] = [option => arg]
+      @options ||= []
+      @options << {name => {option => arg}}
     end
   end
 
@@ -17,7 +17,12 @@ module Validation
     protected
 
     def validate!
-      
+      self.class.options.each do |key|
+        instance = key.keys[0].to_s
+        puts key.values[0].values if key.values[0][:type]
+        puts key.values[0].values if key.values[0][:presence]
+        eval("presence!(@#{instance})") if key.values[0][:format]
+      end
     end
 
     def valid?
@@ -55,8 +60,3 @@ class A
 end
 
 a = A.new('sss')
-p a.instance_variables
-p A.instance_variables
-p a.class.options
-
-

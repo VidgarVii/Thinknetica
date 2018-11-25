@@ -21,7 +21,7 @@ module Validation
         instance = key.keys[0].to_s
         arg = key.values[0].values[0]
        
-        #puts key.values[0].values if key.values[0][:type]
+        eval("type!(@#{instance}, arg)") if key.values[0][:type]
         eval("presence!(@#{instance})") if key.values[0][:presence]
         eval("format!(@#{instance}, arg)") if key.values[0][:format]
       end
@@ -47,19 +47,3 @@ module Validation
     end
   end
 end
-
-class A
-  include Validation
-
-  validate :name, :presence
-  validate :name, :format, /A-Z/
-  validate :name, :type, String
-
-  def initialize(name)    
-    @name = name
-    validate!
-  end  
-end
-
-a = A.new('A-Z')
-

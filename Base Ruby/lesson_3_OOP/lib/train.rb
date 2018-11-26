@@ -1,9 +1,10 @@
 class Train
   include Manufactur
   include InstanceCounter
+  include Validation
   attr_reader :speed, :count_railwaycar, :number, :wagons, :type, :route
+  validate :number, :format, /^\w{3}-?\w{2}$/
   @@trains = []
-  REGEXP_NUMBER = /^\w{3}-?\w{2}$/.freeze
 
   def self.all
     @@trains
@@ -90,20 +91,7 @@ class Train
     @route.stations[@station_index - 1] unless @station_index.zero?
   end
 
-  def valid?
-    validate!
-    valid_maker!(@maker)
-    true
-  rescue StandardError
-    false
-  end
-
   protected
-
-  def validate!
-    raise 'Не корректный номер' if @number !~ REGEXP_NUMBER
-    raise 'Не соответствие типов' if @type != 'cargo' && @type != 'passenger'
-  end
 
   def valid_wagon!(wagon)
     raise 'Тип вагона не совпадает с типом поезда' if wagon.type != type

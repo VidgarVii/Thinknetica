@@ -1,6 +1,8 @@
 class Station
+  include Validation
   include InstanceCounter
   attr_reader :list_train, :name
+  validate :name, :presence
   @@stations = []
 
   def self.all
@@ -31,18 +33,5 @@ class Station
     # type = passenger || cargo
     trains = @list_train.select { |train| train.type == type }
     trains.each { |train| puts train.number }
-  end
-
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-
-  private
-
-  def validate!
-    raise 'Название станции должно содержать более 3х символов' if @name.size < 3
   end
 end

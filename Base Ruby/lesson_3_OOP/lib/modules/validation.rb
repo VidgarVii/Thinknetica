@@ -9,7 +9,7 @@ module Validation
 
     def validate(name, option, arg = nil)
       @options ||= []
-      @options << {name => {option => arg}}
+      @options << { name => { option => arg } }
     end
   end
 
@@ -17,12 +17,13 @@ module Validation
     protected
 
     def validate!
+      puts @options
       self.class.options.each do |key|
         instance = key.keys[0].to_s
         arg = key.values[0].values[0]
-       
+
         eval("type!(@#{instance}, arg)") if key.values[0][:type]
-        eval("presence!(@#{instance})") if key.values[0][:presence]
+        eval("presence!(@#{instance})") if key.values[0][:presence].nil?
         eval("format!(@#{instance}, arg)") if key.values[0][:format]
       end
     end
@@ -30,7 +31,7 @@ module Validation
     def valid?
       validate!
       true
-    rescue
+    rescue StandardError
       false
     end
 
@@ -41,7 +42,7 @@ module Validation
     def format!(instance, format)
       raise 'Формат не корректен' if instance !~ format
     end
-    
+
     def presence!(instance)
       raise 'Значение не должно быть пустым' if instance.empty? || instance.nil?
     end

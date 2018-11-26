@@ -1,6 +1,7 @@
 require_relative 'lib/modules/rails_way'
 require_relative 'lib/modules/instance_counter'
 require_relative 'lib/modules/check_object'
+require_relative 'lib/modules/validation'
 require_relative 'lib/train'
 require_relative 'lib/cargo_train'
 require_relative 'lib/passenger_train'

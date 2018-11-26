@@ -15,3 +15,14 @@ Metrics/AbcSize:
 Metrics/ClassLength:
   Exclude:
     - 'Base Ruby/lesson_3_OOP/lib/menu/railroad.rb'
+
+Style/Documentation:
+  Enabled: false
+
+Lint/UnusedBlockArgument:
+  Exclude:
+    - 'Base Ruby/lesson_3_OOP/lib/modules/accessor.rb'
+
+Lint/UselessAssignment:
+  Exclude:
+    - 'Base Ruby/lesson_3_OOP/lib/modules/validation.rb'

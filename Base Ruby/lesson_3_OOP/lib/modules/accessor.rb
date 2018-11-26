@@ -33,6 +33,7 @@ module Accessors
 
       instance = name_instance.to_s.split('_')[0]
       instance_variable_get("@#{instance}".to_sym)
+      super
     end
   end
 end

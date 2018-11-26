@@ -14,20 +14,6 @@ module Validation
   end
 
   module InstanceMethods
-    protected
-
-    def validate!
-      puts @options
-      self.class.options.each do |key|
-        instance = key.keys[0].to_s
-        arg = key.values[0].values[0]
-
-        eval("type!(@#{instance}, arg)") if key.values[0][:type]
-        eval("presence!(@#{instance})") if key.values[0][:presence].nil?
-        eval("format!(@#{instance}, arg)") if key.values[0][:format]
-      end
-    end
-
     def valid?
       validate!
       true
@@ -35,7 +21,21 @@ module Validation
       false
     end
 
+    protected
+
+    def validate!
+      self.class.options.each do |key|
+        instance = key.keys[0].to_s
+        arg = key.values[0].values[0]
+        check_instatnce =  instance_variable_get("@#{instance}")
+        type!(check_instatnce, arg) if key.values[0][:type]
+        presence!(check_instatnce) if key.values[0].keys.include?(:presence)
+        format!(check_instatnce, arg) if key.values[0][:format]
+      end
+    end
+
     def type!(instance, class_name)
+      puts instance
       raise 'Не совпадает класс' unless instance.class == class_name
     end
 
@@ -44,7 +44,7 @@ module Validation
     end
 
     def presence!(instance)
-      raise 'Значение не должно быть пустым' if instance.empty? || instance.nil?
+      raise 'Значение не должно быть пустым' unless instance
     end
   end
 end

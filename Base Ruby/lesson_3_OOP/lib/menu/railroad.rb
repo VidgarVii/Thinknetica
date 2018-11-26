@@ -290,10 +290,10 @@ class RailRoad
       start = gets.chomp.to_i
       puts 'Выберите конечную станцию'
       finish = gets.chomp.to_i
-      @routes << Route.new(Station.all[start], Station.all[finish])
+      @routes << Route.new(@stations[start], @stations[finish])
     rescue StandardError => exception
       puts exception
-      retry
+      return
     end
   end
 
@@ -322,7 +322,7 @@ class RailRoad
     @trains << Train.new('002-01', 'cargo')
     @stations << Station.new('Трансильвания')
     @stations << Station.new('Пенсильвания')
-    @routes << Route.new(@stations[0], @stations[1])
+    @routes << Route.new(@stations[0], @stations[1])  
   end
 
   def show_train(train)

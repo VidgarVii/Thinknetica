@@ -44,7 +44,7 @@ module Validation
     end
 
     def presence!(instance)
-      raise 'Значение не должно быть пустым' unless instance
+      raise 'Значение не должно быть пустым' if instance.to_s.empty? || instance.nil?
     end
   end
 end

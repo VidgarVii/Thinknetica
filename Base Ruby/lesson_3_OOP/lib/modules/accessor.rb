@@ -1,39 +1,23 @@
 module Accessors
-  def self.included(base)
-    base.extend ClassMethods
-    base.send :include, InstanceMeyhods
-  end
-
-  module ClassMethods
-    def attr_accessor_with_history(*names)
-      names.each do |name|
-        var_name, set_name, get_name = ["@#{name}", "#{name}=", name].map(&:to_sym)
-        define_method(get_name) { instance_variable_get(var_name)[-1] }
-        define_method(set_name) do |value|
-          eval("#{var_name} ||= []")
-          eval("#{var_name} << value")
-        end
-      end
-    end
-
-    def strong_attr_accessor(name, class_name)
-      var_name, set_name, get_name = ["@#{name}", "#{name}=", name].map(&:to_sym)
-      define_method(get_name) { instance_variable_get(var_name) }
+  def attr_accessor_with_history(*names)
+    names.each do |name|
+      set_name, get_name = ["#{name}=", name].map(&:to_sym)
+      define_method(get_name) { instance_variable_get(:"@#{name}")[-1] }
       define_method(set_name) do |value|
-        raise 'Не совпадает класс' unless value.class == class_name
-
-        instance_variable_set(var_name, value)
+        instance_variable_set(:"@#{name}", []) unless instance_variable_get(:"@#{name}")
+        instance_variable_get(:"@#{name}").send(:<<, value)
       end
+      define_method("#{name}_history") { instance_variable_get(:"@#{name}") }
     end
   end
 
-  module InstanceMeyhods
-    def method_missing(name_instance)
-      return unless name_instance.to_s.include?('_history')
+  def strong_attr_accessor(name, class_name)
+    var_name, set_name, get_name = ["@#{name}", "#{name}=", name].map(&:to_sym)
+    define_method(get_name) { instance_variable_get(var_name) }
+    define_method(set_name) do |value|
+      raise 'Не совпадает класс' unless value.class == class_name
 
-      instance = name_instance.to_s.split('_')[0]
-      instance_variable_get("@#{instance}".to_sym)
-      super
+      instance_variable_set(var_name, value)
     end
   end
 end

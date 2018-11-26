@@ -28,23 +28,34 @@ module Validation
         instance = key.keys[0].to_s
         arg = key.values[0].values[0]
         check_instatnce =  instance_variable_get("@#{instance}")
-        type!(check_instatnce, arg) if key.values[0][:type]
-        presence!(check_instatnce) if key.values[0].keys.include?(:presence)
-        format!(check_instatnce, arg) if key.values[0][:format]
+        method = key.values[0].keys[0].to_sym
+        send(method, check_instatnce, arg)  
       end
     end
 
-    def type!(instance, class_name)
+    def type(instance, class_name)
       puts instance
       raise 'Не совпадает класс' unless instance.class == class_name
     end
 
-    def format!(instance, format)
+    def format(instance, format)
       raise 'Формат не корректен' if instance !~ format
     end
 
-    def presence!(instance)
+    def presence(instance, *arg)
       raise 'Значение не должно быть пустым' if instance.to_s.empty? || instance.nil?
     end
   end
 end
+
+class A
+  include Validation
+  attr_accessor :name
+  validate :name, :presence
+  validate :name, :type, String
+  validate :name, :format, /z/
+end
+
+n = A.new
+n.name = '2'
+n.send(:validate!)

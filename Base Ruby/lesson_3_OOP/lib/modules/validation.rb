@@ -47,15 +47,3 @@ module Validation
     end
   end
 end
-
-class A
-  include Validation
-  attr_accessor :name
-  validate :name, :presence
-  validate :name, :type, String
-  validate :name, :format, /z/
-end
-
-n = A.new
-n.name = '2'
-n.send(:validate!)

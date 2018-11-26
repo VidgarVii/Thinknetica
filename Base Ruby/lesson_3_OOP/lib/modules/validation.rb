@@ -27,9 +27,9 @@ module Validation
       self.class.options.each do |key|
         instance = key.keys[0].to_s
         arg = key.values[0].values[0]
-        check_instatnce =  instance_variable_get("@#{instance}")
+        check_instatnce = instance_variable_get("@#{instance}")
         method = key.values[0].keys[0].to_sym
-        send(method, check_instatnce, arg)  
+        send(method, check_instatnce, arg)
       end
     end
 
@@ -42,7 +42,7 @@ module Validation
       raise 'Формат не корректен' if instance !~ format
     end
 
-    def presence(instance, *arg)
+    def presence(instance, arg)
       raise 'Значение не должно быть пустым' if instance.to_s.empty? || instance.nil?
     end
   end

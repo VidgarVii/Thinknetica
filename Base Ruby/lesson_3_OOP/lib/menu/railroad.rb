@@ -322,7 +322,7 @@ class RailRoad
     @trains << Train.new('002-01', 'cargo')
     @stations << Station.new('Трансильвания')
     @stations << Station.new('Пенсильвания')
-    @routes << Route.new(@stations[0], @stations[1])  
+    @routes << Route.new(@stations[0], @stations[1])
   end
 
   def show_train(train)

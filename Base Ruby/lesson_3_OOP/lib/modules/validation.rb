@@ -5,11 +5,11 @@ module Validation
   end
 
   module ClassMethods
-    attr_reader :options
+    attr_reader :validations
 
-    def validate(name, option, arg = nil)
-      @options ||= []
-      @options << { name => { option => arg } }
+    def validate(instance, validate, param = nil)
+      @validations ||= []
+      @validations << { attr: instance, type: validate, option: param }
     end
   end
 
@@ -24,25 +24,24 @@ module Validation
     protected
 
     def validate!
-      self.class.options.each do |key|
-        instance = key.keys[0].to_s
-        arg = key.values[0].values[0]
-        check_instatnce = instance_variable_get("@#{instance}")
-        method = key.values[0].keys[0].to_sym
-        send(method, check_instatnce, arg)
+      self.class.validations.each do |validators|
+        method = "validate_#{validators[:type]}"
+        check_instatnce = instance_variable_get("@#{validators[:attr]}")
+        param = validators[:option]
+        send(method, check_instatnce, param)
       end
     end
 
-    def type(instance, class_name)
+    def validate_type(instance, klass)
       puts instance
-      raise 'Не совпадает класс' unless instance.class == class_name
+      raise "#{instance} - не совпадает класс" unless instance.class == klass
     end
 
-    def format(instance, format)
-      raise 'Формат не корректен' if instance !~ format
+    def validate_format(instance, format)
+      raise "Формат #{instance} не корректен" if instance !~ format
     end
 
-    def presence(instance, arg)
+    def validate_presence(instance, param)
       raise 'Значение не должно быть пустым' if instance.to_s.empty? || instance.nil?
     end
   end

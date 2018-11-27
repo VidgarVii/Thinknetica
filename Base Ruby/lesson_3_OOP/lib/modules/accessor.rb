@@ -2,12 +2,13 @@ module Accessors
   def attr_accessor_with_history(*names)
     names.each do |name|
       set_name, get_name = ["#{name}=", name].map(&:to_sym)
-      define_method(get_name) { instance_variable_get(:"@#{name}")[-1] }
+      define_method(get_name) { instance_variable_get(:"@#{name}") }
       define_method(set_name) do |value|
-        instance_variable_set(:"@#{name}", []) unless instance_variable_get(:"@#{name}")
-        instance_variable_get(:"@#{name}").send(:<<, value)
+        instance_variable_set(:"@#{name}", value)
+        instance_variable_set(:"@#{name}_history", []) unless instance_variable_get(:"@#{name}_history")
+        instance_variable_get(:"@#{name}_history").send(:<<, value)
       end
-      define_method("#{name}_history") { instance_variable_get(:"@#{name}") }
+      define_method("#{name}_history") { instance_variable_get(:"@#{name}_history") }
     end
   end
 

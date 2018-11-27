@@ -1,6 +1,6 @@
 class PassengerTrain < Train
-  validate :number, :format, /^\w{3}-?\w{2}$/
-
+  @validations = Train::validations
+  
   def initialize(number)
     super(number, 'passenger')
   end
